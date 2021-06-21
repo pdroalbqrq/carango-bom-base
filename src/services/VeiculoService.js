@@ -1,7 +1,8 @@
+import baseUrl from "../config/environment";
+
 const VeiculoService = {
   listar() {
-    return fetch('https://carango-bom-api.herokuapp.com/veiculos')
-      .then(r => r.json());
+    return fetch(`${baseUrl}/veiculos/`).then((r) => r.json());
   },
 };
 
