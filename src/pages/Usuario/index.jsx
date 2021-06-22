@@ -11,7 +11,14 @@ import validations from "../../utils/validations";
 import UsuarioService from "../../services/UsuarioService";
 
 function Usuario() {
-  const [usuario, setUsuario] = useState({ username: "", password: "" });
+  const [usuarioForm, setUsuarioForm] = useState({
+    username: "",
+    password: "",
+    formErrors: { username: "", password: "" },
+    usernameValid: false,
+    passwordValid: false,
+    formValid: false,
+  });
   const [erros, validarCampos, possoEnviar] = new useErros(validations);
   const history = useHistory();
 
@@ -25,8 +32,34 @@ function Usuario() {
   ];
 
 
-  function campoCerto(){
-    console.log(erros);
+  function handleUserInput(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUsuarioForm({[name]: value});
+    validateField(name, value)
+  }
+
+  function validateField(fieldName, value) {
+  let fieldValidationErrors = usuarioForm.formErrors;
+  let usernameValid = usuarioForm.usernameValid;
+  let passwordValid = usuarioForm.passwordValid;
+
+      switch(fieldName) {
+        case 'username':
+          usernameValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+          fieldValidationErrors.username = usernameValid ? '' : ' is invalid';
+          break;
+        case 'password':
+          passwordValid = value.length >= 6;
+          fieldValidationErrors.password = passwordValid ? '': ' is too short';
+          break;
+        default:
+          break;
+      }
+    setUsuarioForm({formErrors: fieldValidationErrors,
+                  usernameValid: usernameValid,
+                  passwordValid: passwordValid
+                }, this.validateForm);
   }
 
   return (
@@ -34,8 +67,7 @@ function Usuario() {
       onSubmit={(event) => {
         event.preventDefault();
         if (possoEnviar()) {
-          // UsuarioService.autorizar().then();
-          console.log(usuario);
+          console.log(usuarioForm);
         }
       }}
     >
@@ -53,15 +85,10 @@ function Usuario() {
           name="usuario"
           id="usuario"
           label="Usuário"
-          onChange={(evt) => {
-            setUsuario((prevUser) => ({
-              ...prevUser,
-              username: evt.target.value,
-            }));
-            validarCampos(evt, validacoesUsuario);
-          }}
-          helperText={validations.campoCerto("usuario", erros).texto}
-          error={!validations.campoCerto("usuario", erros).valido}
+          value={usuarioForm.username}
+          onChange={(event) => handleUserInput(event)}
+          // helperText={validations.campoCerto("usuario", erros).texto}
+          // error={!validations.campoCerto("usuario", erros).valido}
           type="text"
           variant="outlined"
           fullWidth
@@ -72,15 +99,17 @@ function Usuario() {
           name="senha"
           id="senha"
           label="Senha"
-          onChange={(evt) => {
-            setUsuario((prevUser) => ({
-              ...prevUser,
-              password: evt.target.value,
-            }));
-            validarCampos(evt, validacoesSenha);
-          }}
-          helperText={validations.campoCerto("senha", erros).texto}
-          error={!validations.campoCerto("senha", erros).valido}
+          value={usuarioForm.password}
+          onChange={(event) => handleUserInput(event)}
+          // onChange={(evt) => {
+          //   setUsuarioForm((prevUser) => ({
+          //     ...prevUser,
+          //     password: evt.target.value,
+          //   }));
+          //   validarCampos(evt, validacoesSenha);
+          // }}
+          // helperText={validations.campoCerto("senha", erros).texto}
+          // error={!validations.campoCerto("senha", erros).valido}
           type="text"
           variant="outlined"
           fullWidth
