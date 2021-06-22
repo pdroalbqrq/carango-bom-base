@@ -1,74 +1,105 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 
 import { useHistory } from "react-router";
 
 import useErros from "../../hooks/useErros";
 
-import validations from "../../utils/validations";
+import Validator from "../../utils/validations";
 
 // Service
 import UsuarioService from "../../services/UsuarioService";
+import { lightGreen } from "@material-ui/core/colors";
 
 function Usuario() {
   const [usuarioForm, setUsuarioForm] = useState({
     username: "",
     password: "",
-    formErrors: { username: "", password: "" },
-    usernameValid: false,
-    passwordValid: false,
-    formValid: false,
+    formErrors: {
+      username: { valid: true, text: "" },
+      password: { valid: true, text: "" },
+    },
+    formValid: true,
   });
-  const [erros, validarCampos, possoEnviar] = new useErros(validations);
+
   const history = useHistory();
 
   const validacoesUsuario = [
-    { nome: "tamanhoMinimo", atributos: ["Usuario", 5] },
-    { nome: "tamanhoMaximo", atributos: ["Usuario", 25] },
+    {
+      nome: "tamanhoMinimo",
+      atributos: ["Usuario", 5, !usuarioForm.usernameValid],
+    },
+    {
+      nome: "tamanhoMaximo",
+      atributos: ["Usuario", 25, !usuarioForm.usernameValid],
+    },
   ];
   const validacoesSenha = [
-    { nome: "tamanhoMinimo", atributos: ["Senha", 8] },
-    { nome: "tamanhoMaximo", atributos: ["Senha", 50] },
+    {
+      nome: "tamanhoMinimo",
+      atributos: ["Senha", 8, !usuarioForm.passwordValid],
+    },
+    {
+      nome: "tamanhoMaximo",
+      atributos: ["Senha", 50, !usuarioForm.passwordValid],
+    },
   ];
 
+  function handleUserInput(e, validations) {
+    const { name, value } = e.target;
 
-  function handleUserInput(e) {
-    const name = e.target.name;
-    const value = e.target.value;
-    setUsuarioForm({[name]: value});
-    validateField(name, value)
+    setUsuarioForm({ ...usuarioForm, [name]: value });
+    validateField(name, value, usuarioForm, validations);
   }
 
-  function validateField(fieldName, value) {
-  let fieldValidationErrors = usuarioForm.formErrors;
-  let usernameValid = usuarioForm.usernameValid;
-  let passwordValid = usuarioForm.passwordValid;
+  function validateField(fieldName, value, form, validations) {
+    let fieldValidationErrors = form.formErrors;
+    let usernameValid = form.usernameValid;
+    let passwordValid = form.passwordValid;
+    let validationsFound = [];
 
-      switch(fieldName) {
-        case 'username':
-          usernameValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-          fieldValidationErrors.username = usernameValid ? '' : ' is invalid';
-          break;
-        case 'password':
-          passwordValid = value.length >= 6;
-          fieldValidationErrors.password = passwordValid ? '': ' is too short';
-          break;
-        default:
-          break;
-      }
-    setUsuarioForm({formErrors: fieldValidationErrors,
-                  usernameValid: usernameValid,
-                  passwordValid: passwordValid
-                }, this.validateForm);
+    validations.forEach((validation) => {
+      validationsFound.push(
+        Validator[validation.nome](value, ...validation.atributos)
+      );
+    });
+
+    const hasError = validationsFound.find((val) => !val.valido);
+
+    if (hasError) {
+      console.log(hasError.valido);
+      fieldValidationErrors[fieldName].text = hasError.texto;
+      fieldValidationErrors[fieldName].valid = hasError.valido;
+    }
+
+    if(!hasError){
+      fieldValidationErrors[fieldName].text = "";
+      fieldValidationErrors[fieldName].valid = true;
+    }
+    
+
+    setUsuarioForm(
+      {
+        ...form,
+        formErrors: fieldValidationErrors,
+        usernameValid: usernameValid,
+        passwordValid: passwordValid,
+      },
+      validateForm(form)
+      );
+  }
+
+  function validateForm(form) {
+    setUsuarioForm({
+      ...form,
+      formValid: form.usernameValid && form.passwordValid,
+    });
   }
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        if (possoEnviar()) {
-          console.log(usuarioForm);
-        }
       }}
     >
       <Grid
@@ -82,13 +113,12 @@ function Usuario() {
           Entrar
         </Typography>
         <TextField
-          name="usuario"
+          name="username"
           id="usuario"
           label="Usuário"
-          value={usuarioForm.username}
-          onChange={(event) => handleUserInput(event)}
-          // helperText={validations.campoCerto("usuario", erros).texto}
-          // error={!validations.campoCerto("usuario", erros).valido}
+          onChange={(event) => handleUserInput(event, validacoesUsuario)}
+          error={!usuarioForm.formErrors.username.valid}
+          helperText={usuarioForm.formErrors.username.text}
           type="text"
           variant="outlined"
           fullWidth
@@ -96,20 +126,12 @@ function Usuario() {
           margin="normal"
         />
         <TextField
-          name="senha"
+          name="password"
           id="senha"
           label="Senha"
-          value={usuarioForm.password}
-          onChange={(event) => handleUserInput(event)}
-          // onChange={(evt) => {
-          //   setUsuarioForm((prevUser) => ({
-          //     ...prevUser,
-          //     password: evt.target.value,
-          //   }));
-          //   validarCampos(evt, validacoesSenha);
-          // }}
-          // helperText={validations.campoCerto("senha", erros).texto}
-          // error={!validations.campoCerto("senha", erros).valido}
+          onChange={(event) => handleUserInput(event, validacoesSenha)}
+          helperText={usuarioForm.formErrors.password.text}
+          error={!usuarioForm.formErrors.password.valid}
           type="text"
           variant="outlined"
           fullWidth

@@ -1,39 +1,26 @@
-
 const validations = {
-  tamanhoMinimo: (dado, campo, tamanho, tipo) => {
-    const field = campo.toLowerCase();
-    if (dado && dado.length >= tamanho) {
-      return { valido: true, field,tipo, texto: "" };
-    }
-    return {
+  tamanhoMinimo: (dado, campo, tamanho, error) => {
+    const errorObject = {
       valido: false,
       texto: `${campo} deve ter ao menos ${tamanho} letras.`,
-      field,
-      tipo
     };
-  },
-  tamanhoMaximo: (dado, campo, tamanho, tipo) => {
-    const field = campo.toLowerCase();
+
     if (dado && dado.length <= tamanho) {
-      return { valido: true, field, tipo, texto: "" };
+      return errorObject;
     }
-    return {
+    return { valido: true, texto: "" };
+  },
+  tamanhoMaximo: (dado, campo, tamanho, error) => {
+    const errorObject = {
       valido: false,
       texto: `${campo} deve ter no máximo ${tamanho} letras.`,
-      field,
-      tipo
     };
+
+    if (dado && dado.length >= tamanho) {
+      return errorObject;
+    }
+    return { valido: true, texto: "" };
   },
-  campoCerto: (campo, erros) => {
-   return (
-     erros.find((erro) => erro.field === campo) || {
-       valido: true,
-       texto: "",
-       field: "",
-       validation: campo,
-     }
-   );
-  }
 };
 
 export default validations;
