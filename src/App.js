@@ -1,40 +1,16 @@
-import { Container, CssBaseline, makeStyles } from '@material-ui/core';
-import blue from '@material-ui/core/colors/blue';
-import { ptBR } from '@material-ui/core/locale';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import React from 'react';
-import './App.css';
+import React from "react";
+
+// Libs
+import { Container, CssBaseline } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 // Routes
-import Routes from "./routes"
+import Routes from "./routes";
 
-const muiTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: blue[900],
-    }
-  },
-}, ptBR);
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
-  },
-}));
+// Styles
+import { useStyles, muiTheme } from "./AppStyles";
 
 function App() {
-
   const classes = useStyles();
 
   return (

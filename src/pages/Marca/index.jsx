@@ -12,16 +12,16 @@ import MarcaService from "../../services/MarcaService";
 // Style
 import { useStyles } from "./styles";
 
-const colunas = [{ field: "nome", headerName: "Marca", width: 200 }];
+const colunas = [{ field: "nome", headerName: "Marca", flex: 1 }];
 
-function ListagemMarcas() {
+function Marca() {
   const [marcas, setMarcas] = useState([]);
   const [marcaSelecionada, setMarcaSelecionada] = useState();
   const classes = useStyles();
   const history = useHistory();
 
   function alterar() {
-    history.push("/alteracao-marca/" + marcaSelecionada.id);
+    history.push("/marca/edicao/" + marcaSelecionada.id);
   }
 
   function excluir() {
@@ -72,7 +72,7 @@ function ListagemMarcas() {
         color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={() => history.push("/cadastro-marca")}
+        onClick={() => history.push("/marca/cadastro")}
       >
         <AddIcon />
       </Fab>
@@ -80,4 +80,4 @@ function ListagemMarcas() {
   );
 }
 
-export default ListagemMarcas;
+export default Marca;
