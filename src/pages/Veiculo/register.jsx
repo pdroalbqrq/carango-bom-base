@@ -53,7 +53,9 @@ function VeiculoRegister() {
 
   useEffect(() => {
     if (id) {
-      VeiculoService.consultar(id).then((veiculo) => setVeiculo(veiculo));
+      VeiculoService.consultar(id).then((value) => {
+        setVeiculo({ ...veiculo, ...value });
+      });
     }
   }, [id]);
 
