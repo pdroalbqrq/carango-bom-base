@@ -4,10 +4,11 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 // Pages
+import Login from "../pages/Login";
+import Cadastro from "../pages/Cadastro";
+
 import Marca from "../pages/Marca";
 import MarcaRegister from "../pages/Marca/register";
-import Usuario from "../pages/Usuario/index";
-import UsuarioRegister from "../pages/Usuario/register";
 
 import Veiculo from "../pages/Veiculo";
 import VeiculoRegister from "../pages/Veiculo/register";
@@ -15,23 +16,6 @@ import VeiculoRegister from "../pages/Veiculo/register";
 function Routes() {
   return (
     <Switch>
-<<<<<<< Updated upstream
-      <Route path="/cadastro-marca">
-        <MarcaRegister />
-      </Route>
-      <Route path="/entrar">
-        <Usuario />
-      </Route>
-      <Route path="/cadastro-usuario">
-        <UsuarioRegister />
-      </Route>
-      <Route path="/alteracao-marca/:id">
-        <MarcaRegister />
-      </Route>
-      <Route path="/">
-        <Marca />
-      </Route>
-=======
       {/* Veículos */}
       <Route exact path="/" component={Veiculo} />
       <Route exact path="/veiculo/cadastro" component={VeiculoRegister} />
@@ -40,7 +24,10 @@ function Routes() {
       <Route exact path="/marcas" component={Marca} />
       <Route exact path="/marca/cadastro" component={MarcaRegister} />
       <Route exact path="/marca/edicao/:id" component={MarcaRegister} />
->>>>>>> Stashed changes
+      {/* Login */}
+      <Route exact path="/login" component={Login} />
+      {/* Cadastro */}
+      <Route exact path="/cadastro" component={Cadastro} />
     </Switch>
   );
 }

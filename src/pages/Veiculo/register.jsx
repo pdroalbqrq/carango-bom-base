@@ -17,9 +17,6 @@ import useErros from "../../hooks/useErros";
 // Service
 import VeiculoService from "../../services/VeiculoService";
 
-// Validations
-import validations from "../../utils/validations";
-
 // Style
 import { useStyles } from "./styles";
 
@@ -29,17 +26,26 @@ function VeiculoRegister() {
     modelo: "",
     ano: "",
     valor: "",
+    formErrors: {
+      modelo: { valid: true, text: "" },
+      ano: { valid: true, text: "" },
+      valor: { valid: true, text: "" },
+    },
+    formValid: true,
   });
   const classes = useStyles();
-
+  const { handleUserInput, formatValid } = useErros();
   const history = useHistory();
   const { id } = useParams();
-  const [erros, validarCampos, possoEnviar] = useErros(validations);
 
-  const tiposValidacao = [
-    { nome: "tamanhoMinimo", atributos: ["marca", 3] },
-    { nome: "tamanhoMaximo", atributos: ["marca", 10] },
+  const validacoesModelo = [
+    formatValid("tamanhoMinimo", ["Marca", 3]),
+    formatValid("tamanhoMaximo", ["Marca", 50]),
   ];
+
+  const validacoesAno = [];
+
+  const validacoesValor = [];
 
   function cancelar() {
     history.goBack();
@@ -56,29 +62,29 @@ function VeiculoRegister() {
       onSubmit={(event) => {
         event.preventDefault();
 
-        if (possoEnviar()) {
-          if (id) {
-            VeiculoService.alterar({
-              id,
-              marca: veiculo.marca,
-              modelo: veiculo.modelo,
-              ano: veiculo.ano,
-              valor: veiculo.valor,
-            }).then((res) => {
-              history.goBack();
-            });
-          } else {
-            VeiculoService.cadastrar({
-              marca: veiculo.marca,
-              modelo: veiculo.modelo,
-              ano: veiculo.ano,
-              valor: veiculo.valor,
-            }).then((res) => {
-              setVeiculo("");
-              history.goBack();
-            });
-          }
-        }
+        // if (possoEnviar()) {
+        //   if (id) {
+        //     VeiculoService.alterar({
+        //       id,
+        //       marca: veiculo.marca,
+        //       modelo: veiculo.modelo,
+        //       ano: veiculo.ano,
+        //       valor: veiculo.valor,
+        //     }).then((res) => {
+        //       history.goBack();
+        //     });
+        //   } else {
+        //     VeiculoService.cadastrar({
+        //       marca: veiculo.marca,
+        //       modelo: veiculo.modelo,
+        //       ano: veiculo.ano,
+        //       valor: veiculo.valor,
+        //     }).then((res) => {
+        //       setVeiculo("");
+        //       history.goBack();
+        //     });
+        //   }
+        // }
       }}
     >
       <FormControl variant="outlined" fullWidth required>
@@ -102,12 +108,11 @@ function VeiculoRegister() {
 
       <TextField
         value={veiculo.modelo}
-        onChange={(evt) => {
-          setVeiculo({ ...veiculo, modelo: evt.target.value });
-          // validarCampos(evt, tiposValidacao);
+        onChange={(event) => {
+          handleUserInput(event, validacoesModelo, veiculo, setVeiculo);
         }}
-        // helperText={erros.tamanhoMinimo.texto || erros.tamanhoMaximo.texto}
-        // error={!erros.tamanhoMinimo.valido || !erros.tamanhoMaximo.valido}
+        error={!veiculo.formErrors.modelo.valid}
+        helperText={veiculo.formErrors.modelo.text}
         name="modelo"
         id="modelo"
         label="Modelo"
@@ -120,12 +125,11 @@ function VeiculoRegister() {
 
       <TextField
         value={veiculo.ano}
-        onChange={(evt) => {
-          setVeiculo({ ...veiculo, ano: evt.target.value });
-          // validarCampos(evt, tiposValidacao);
+        onChange={(event) => {
+          handleUserInput(event, validacoesAno, veiculo, setVeiculo);
         }}
-        // helperText={erros.tamanhoMinimo.texto || erros.tamanhoMaximo.texto}
-        // error={!erros.tamanhoMinimo.valido || !erros.tamanhoMaximo.valido}
+        error={!veiculo.formErrors.ano.valid}
+        helperText={veiculo.formErrors.ano.text}
         name="ano"
         id="ano"
         label="Ano"
@@ -138,12 +142,11 @@ function VeiculoRegister() {
 
       <TextField
         value={veiculo.valor}
-        onChange={(evt) => {
-          setVeiculo({ ...veiculo, valor: evt.target.value });
-          // validarCampos(evt, tiposValidacao);
+        onChange={(event) => {
+          handleUserInput(event, validacoesValor, veiculo, setVeiculo);
         }}
-        // helperText={erros.tamanhoMinimo.texto || erros.tamanhoMaximo.texto}
-        // error={!erros.tamanhoMinimo.valido || !erros.tamanhoMaximo.valido}
+        error={!veiculo.formErrors.valor.valid}
+        helperText={veiculo.formErrors.valor.text}
         name="valor"
         id="valor"
         label="Valor"
@@ -167,7 +170,7 @@ function VeiculoRegister() {
           variant="contained"
           color="primary"
           type="submit"
-          disabled={!possoEnviar()}
+          // disabled={!possoEnviar()}
           className={classes.actions}
         >
           {id ? "Alterar" : "Cadastrar"}

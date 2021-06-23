@@ -1,14 +1,13 @@
 import Validator from "../utils/validations";
 
-class UseErros {
-   handleUserInput(e, validations, getForm, setForm) {
+function UseErros() {
+  const handleUserInput = (e, validations, getForm, setForm) => {
     const { name, value } = e.target;
-
+    validateField(name, value, getForm, validations, setForm);
     setForm({ ...getForm, [name]: value });
-    this.validateField(name, value, getForm, validations, setForm);
-  }
+  };
 
-   validateField(fieldName, value, getForm, validations, setForm) {
+  const validateField = (fieldName, value, getForm, validations, setForm) => {
     let fieldValidationErrors = getForm.formErrors;
     let validationsFound = [];
 
@@ -35,17 +34,25 @@ class UseErros {
         ...getForm,
         formErrors: fieldValidationErrors,
       },
-      this.validateForm(getForm, setForm)
+      validateForm(getForm, setForm)
     );
-  }
+  };
 
-   validateForm(getForm, setForm) {
+  const validateForm = (getForm, setForm) => {
     setForm({
       ...getForm,
       formValid: getForm.usernameValid && getForm.passwordValid,
     });
-  }
-}
+  };
 
+  const formatValid = (name, attributes) => {
+    return {
+      nome: name,
+      atributos: attributes,
+    };
+  };
+
+  return { handleUserInput, formatValid };
+}
 
 export default UseErros;

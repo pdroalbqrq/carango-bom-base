@@ -10,23 +10,26 @@ import useErros from "../../hooks/useErros";
 // Service
 import MarcaService from "../../services/MarcaService";
 
-// Validations
-import validations from "../../utils/validations";
-
 // Style
 import { useStyles } from "./styles";
 
 function MarcaRegister() {
-  const [marca, setMarca] = useState("");
-  const classes = useStyles();
+  const [marca, setMarca] = useState({
+    marca: "",
+    formErrors: {
+      marca: { valid: true, text: "" },
+    },
+    formValid: true,
+  });
 
+  const classes = useStyles();
+  const { handleUserInput, formatValid } = useErros();
   const history = useHistory();
   const { id } = useParams();
-  const [erros, validarCampos, possoEnviar] = useErros(validations);
 
-  const tiposValidacao = [
-    { nome: "tamanhoMinimo", atributos: ["marca", 3] },
-    { nome: "tamanhoMaximo", atributos: ["marca", 10] },
+  const validacoesMarca = [
+    formatValid("tamanhoMinimo", ["Marca", 3]),
+    formatValid("tamanhoMaximo", ["Marca", 50]),
   ];
 
   function cancelar() {
@@ -35,7 +38,9 @@ function MarcaRegister() {
 
   useEffect(() => {
     if (id) {
-      MarcaService.consultar(id).then((m) => setMarca(m.nome));
+      MarcaService.consultar(id).then((m) =>
+        setMarca({ ...marca, marca: m.nome })
+      );
     }
   }, [id]);
 
@@ -43,28 +48,27 @@ function MarcaRegister() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        if (possoEnviar()) {
-          if (id) {
-            MarcaService.alterar({ id, nome: marca }).then((res) => {
-              history.goBack();
-            });
-          } else {
-            MarcaService.cadastrar({ nome: marca }).then((res) => {
-              setMarca("");
-              history.goBack();
-            });
-          }
-        }
+        // if (possoEnviar()) {
+        //   if (id) {
+        //     MarcaService.alterar({ id, nome: marca }).then((res) => {
+        //       history.goBack();
+        //     });
+        //   } else {
+        //     MarcaService.cadastrar({ nome: marca }).then((res) => {
+        //       setMarca("");
+        //       history.goBack();
+        //     });
+        //   }
+        // }
       }}
     >
       <TextField
-        value={marca}
-        onChange={(evt) => {
-          setMarca(evt.target.value);
-          validarCampos(evt, tiposValidacao);
+        value={marca.marca}
+        onChange={(event) => {
+          handleUserInput(event, validacoesMarca, marca, setMarca);
         }}
-        helperText={erros.tamanhoMinimo.texto || erros.tamanhoMaximo.texto}
-        error={!erros.tamanhoMinimo.valido || !erros.tamanhoMaximo.valido}
+        error={!marca.formErrors.marca.valid}
+        helperText={marca.formErrors.marca.text}
         name="marca"
         id="marca"
         label="Marca"
@@ -88,7 +92,7 @@ function MarcaRegister() {
           variant="contained"
           color="primary"
           type="submit"
-          disabled={!possoEnviar()}
+          // disabled={!possoEnviar()}
           className={classes.actions}
         >
           {id ? "Alterar" : "Cadastrar"}
