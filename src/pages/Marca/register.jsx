@@ -13,8 +13,12 @@ import MarcaService from "../../services/MarcaService";
 // Validations
 import validations from "../../utils/validations";
 
-function CadastroMarca() {
+// Style
+import { useStyles } from "./styles";
+
+function MarcaRegister() {
   const [marca, setMarca] = useState("");
+  const classes = useStyles();
 
   const history = useHistory();
   const { id } = useParams();
@@ -29,12 +33,11 @@ function CadastroMarca() {
     history.goBack();
   }
 
-  // TODO: Avaliar remover disable na próxima linha
   useEffect(() => {
     if (id) {
       MarcaService.consultar(id).then((m) => setMarca(m.nome));
     }
-  }, [id]); // eslint-disable-line
+  }, [id]);
 
   return (
     <form
@@ -72,20 +75,27 @@ function CadastroMarca() {
         margin="normal"
       />
 
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        disabled={!possoEnviar()}
-      >
-        {id ? "Alterar" : "Cadastrar"}
-      </Button>
-
-      <Button variant="contained" color="secondary" onClick={cancelar}>
-        Cancelar
-      </Button>
+      <div className={classes.actionsToolbar}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={cancelar}
+          className={classes.actions}
+        >
+          Cancelar
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={!possoEnviar()}
+          className={classes.actions}
+        >
+          {id ? "Alterar" : "Cadastrar"}
+        </Button>
+      </div>
     </form>
   );
 }
 
-export default CadastroMarca;
+export default MarcaRegister;
