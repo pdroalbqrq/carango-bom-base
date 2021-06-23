@@ -1,41 +1,51 @@
-import { useState } from "react";
+import Validator from "../utils/validations";
 
-function useErros(validacoes) {
-  const estadoInicial = []
-  console.log(estadoInicial);
+class UseErros {
+   handleUserInput(e, validations, getForm, setForm) {
+    const { name, value } = e.target;
 
-  const [erros, setErros] = useState(estadoInicial);
+    setForm({ ...getForm, [name]: value });
+    this.validateField(name, value, getForm, validations, setForm);
+  }
 
-  function validarCampos(event, tiposValidacao) {
-    const { value } = event.target;
-    let novoEstado = [ ...erros ];
-    tiposValidacao.forEach((tipo) => {
-      novoEstado.push(
-        validacoes[tipo.nome](value, ...tipo.atributos, tipo.nome)
+   validateField(fieldName, value, getForm, validations, setForm) {
+    let fieldValidationErrors = getForm.formErrors;
+    let validationsFound = [];
+
+    validations.forEach((validation) => {
+      validationsFound.push(
+        Validator[validation.nome](value, ...validation.atributos)
       );
     });
 
-    setErros([
-      ...new Map(
-        novoEstado.map((item) => {
-          return [item.tipo, item];
-        })
-      ).values(),
-    ]);
-  }
+    const hasError = validationsFound.find((val) => !val.valido);
 
-  function possoEnviar() {
-    for (let campo in erros) {
-      if (!erros[campo].valido) {
-        return false;
-      }
+    if (hasError) {
+      fieldValidationErrors[fieldName].text = hasError.texto;
+      fieldValidationErrors[fieldName].valid = hasError.valido;
     }
 
-    return true;
+    if (!hasError) {
+      fieldValidationErrors[fieldName].text = "";
+      fieldValidationErrors[fieldName].valid = true;
+    }
+
+    setForm(
+      {
+        ...getForm,
+        formErrors: fieldValidationErrors,
+      },
+      this.validateForm(getForm, setForm)
+    );
   }
 
-  return [erros, validarCampos, possoEnviar];
+   validateForm(getForm, setForm) {
+    setForm({
+      ...getForm,
+      formValid: getForm.usernameValid && getForm.passwordValid,
+    });
+  }
 }
 
 
-export default useErros;
+export default UseErros;

@@ -3,16 +3,13 @@ import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 
 import { useHistory } from "react-router";
 
-import useErros from "../../hooks/useErros";
-
-import Validator from "../../utils/validations";
+import UseErros from "../../hooks/useErros";
 
 // Service
 import UsuarioService from "../../services/UsuarioService";
-import { lightGreen } from "@material-ui/core/colors";
 
 function Usuario() {
-  const [usuarioForm, setUsuarioForm] = useState({
+  const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
     formErrors: {
@@ -22,79 +19,31 @@ function Usuario() {
     formValid: true,
   });
 
+  const formValidation = new UseErros();
   const history = useHistory();
 
-  const validacoesUsuario = [
+  const validacoesLogin = [
     {
       nome: "tamanhoMinimo",
-      atributos: ["Usuario", 5, !usuarioForm.usernameValid],
+      atributos: ["Usuário", 5],
     },
     {
       nome: "tamanhoMaximo",
-      atributos: ["Usuario", 25, !usuarioForm.usernameValid],
+      atributos: ["Usuário", 25],
     },
   ];
   const validacoesSenha = [
     {
       nome: "tamanhoMinimo",
-      atributos: ["Senha", 8, !usuarioForm.passwordValid],
+      atributos: ["Senha", 8],
     },
     {
       nome: "tamanhoMaximo",
-      atributos: ["Senha", 50, !usuarioForm.passwordValid],
+      atributos: ["Senha", 50],
     },
   ];
 
-  function handleUserInput(e, validations) {
-    const { name, value } = e.target;
 
-    setUsuarioForm({ ...usuarioForm, [name]: value });
-    validateField(name, value, usuarioForm, validations);
-  }
-
-  function validateField(fieldName, value, form, validations) {
-    let fieldValidationErrors = form.formErrors;
-    let usernameValid = form.usernameValid;
-    let passwordValid = form.passwordValid;
-    let validationsFound = [];
-
-    validations.forEach((validation) => {
-      validationsFound.push(
-        Validator[validation.nome](value, ...validation.atributos)
-      );
-    });
-
-    const hasError = validationsFound.find((val) => !val.valido);
-
-    if (hasError) {
-      console.log(hasError.valido);
-      fieldValidationErrors[fieldName].text = hasError.texto;
-      fieldValidationErrors[fieldName].valid = hasError.valido;
-    }
-
-    if(!hasError){
-      fieldValidationErrors[fieldName].text = "";
-      fieldValidationErrors[fieldName].valid = true;
-    }
-    
-
-    setUsuarioForm(
-      {
-        ...form,
-        formErrors: fieldValidationErrors,
-        usernameValid: usernameValid,
-        passwordValid: passwordValid,
-      },
-      validateForm(form)
-      );
-  }
-
-  function validateForm(form) {
-    setUsuarioForm({
-      ...form,
-      formValid: form.usernameValid && form.passwordValid,
-    });
-  }
 
   return (
     <form
@@ -116,9 +65,16 @@ function Usuario() {
           name="username"
           id="usuario"
           label="Usuário"
-          onChange={(event) => handleUserInput(event, validacoesUsuario)}
-          error={!usuarioForm.formErrors.username.valid}
-          helperText={usuarioForm.formErrors.username.text}
+          onChange={(event) =>
+            formValidation.handleUserInput(
+              event,
+              validacoesLogin,
+              loginForm,
+              setLoginForm
+            )
+          }
+          error={!loginForm.formErrors.username.valid}
+          helperText={loginForm.formErrors.username.text}
           type="text"
           variant="outlined"
           fullWidth
@@ -129,9 +85,16 @@ function Usuario() {
           name="password"
           id="senha"
           label="Senha"
-          onChange={(event) => handleUserInput(event, validacoesSenha)}
-          helperText={usuarioForm.formErrors.password.text}
-          error={!usuarioForm.formErrors.password.valid}
+          onChange={(event) =>
+            formValidation.handleUserInput(
+              event,
+              validacoesSenha,
+              loginForm,
+              setLoginForm
+            )
+          }
+          helperText={loginForm.formErrors.password.text}
+          error={!loginForm.formErrors.password.valid}
           type="text"
           variant="outlined"
           fullWidth
