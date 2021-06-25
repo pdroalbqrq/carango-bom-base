@@ -21,7 +21,7 @@ function Marca() {
   const history = useHistory();
 
   function alterar() {
-    history.push("/marca/edicao/" + marcaSelecionada.id);
+    history.push("/marcas/edicao/" + marcaSelecionada.id);
   }
 
   function excluir() {
@@ -72,7 +72,7 @@ function Marca() {
         color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={() => history.push("/marca/cadastro")}
+        onClick={() => history.push("/marcas/cadastro")}
       >
         <AddIcon />
       </Fab>

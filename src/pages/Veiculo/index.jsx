@@ -31,7 +31,7 @@ function Veiculo() {
   const history = useHistory();
 
   function alterar() {
-    history.push("/veiculo/edicao/" + veiculoSelecionado.id);
+    history.push("/veiculos/edicao/" + veiculoSelecionado.id);
   }
 
   function excluir() {
@@ -82,7 +82,7 @@ function Veiculo() {
         color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={() => history.push("/veiculo/cadastro")}
+        onClick={() => history.push("/veiculos/cadastro")}
       >
         <AddIcon />
       </Fab>
