@@ -13,6 +13,9 @@ import MarcaRegister from "../pages/Marca/register";
 import Veiculo from "../pages/Veiculo";
 import VeiculoRegister from "../pages/Veiculo/register";
 
+import Usuario from "../pages/Usuario";
+import UsuarioRegister from "../pages/Usuario/register";
+
 function Routes() {
   return (
     <Switch>
@@ -28,6 +31,10 @@ function Routes() {
       <Route exact path="/login" component={Login} />
       {/* Cadastro */}
       <Route exact path="/cadastro" component={Cadastro} />
+      {/* Usuarios */}
+      <Route exact path="/usuarios" component={Usuario} />
+      <Route exact path="/usuario/cadastro" component={UsuarioRegister} />
+      <Route exact path="/usuario/edicao/:id" component={UsuarioRegister} />
     </Switch>
   );
 }

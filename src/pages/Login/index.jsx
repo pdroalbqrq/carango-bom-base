@@ -5,9 +5,6 @@ import { useHistory } from "react-router";
 
 import useErros from "../../hooks/useErros";
 
-// Service
-import UsuarioService from "../../services/UsuarioService";
-
 function Login() {
   const [loginForm, setLoginForm] = useState({
     username: "",

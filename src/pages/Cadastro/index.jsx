@@ -17,7 +17,6 @@ function Cadastro() {
     },
     formValid: true,
   });
-  const [password, setPassword] = useState("");
 
   const formValidation = new UseErros();
 
@@ -84,7 +83,6 @@ function Cadastro() {
           id="senha"
           label="Senha"
           onChange={(event) => {
-            setPassword(event.target.value);
             formValidation.handleUserInput(
               event,
               validacoesSenha,

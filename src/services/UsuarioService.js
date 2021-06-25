@@ -1,21 +1,57 @@
-import baseUrl from "../config/environment";
+// import baseUrl from "../config/environment";
 
-const UsuarioService = {
-  autorizar(user) {
-    return fetch(`https://60d1d60d5b017400178f479a.mockapi.io/api/auth`).then(
-      (r) => {
-          console.log(r.json());
-        return  r.json()[0]
-        }
-    );
+let users = [
+  {
+    id: 1,
+    nome: "Pedro",
   },
-  desabilitarToken() {
-    return fetch(`https://60d1d60d5b017400178f479a.mockapi.io/api/auth`).then(
-      (r) => {
-        console.log(r.json());
-        return r.json()[0];
-      }
-    );
+  {
+    id: 2,
+    nome: "Diego",
+  },
+  {
+    id: 3,
+    nome: "José",
+  },
+];
+const UsuarioService = {
+  cadastrar(usuario) {
+    users.push(usuario);
+    // return fetch(`${baseUrl}/usuarios/`, {
+    //   method: "POST",
+    //   body: JSON.stringify(usuario),
+    // }).then((r) => r.json());
+  },
+
+  alterar(usuario) {
+    // return fetch(`${baseUrl}/usuarios/` + usuario.id, {
+    //   method: "PUT",
+    //   body: JSON.stringify(usuario),
+    // }).then((r) => r.json());
+  },
+
+  consultar(id) {
+    const foundUser = users.find((user) => +user.id === +id);
+
+    return Promise.resolve(foundUser).then((r) => r);
+    // return fetch(`${baseUrl}/usuarios/` + id).then((r) => r.json());
+  },
+
+  listar() {
+    return Promise.resolve(users).then((r) => r);
+    // return fetch(`${baseUrl}/usuarios/`).then((r) => {
+    //   console.log(r);
+    //   return r.json();
+    // });
+  },
+
+  excluir(usuario) {
+    users = users.filter((user) => +user.id !== +usuario.id);
+
+    return Promise.resolve(users).then((r) => r);
+    // return fetch(`${baseUrl}/usuarios/` + usuario.id, {
+    //   method: "DELETE",
+    // }).then((r) => r.json());
   },
 };
 
