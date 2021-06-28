@@ -1,13 +1,15 @@
 import { makeStyles } from "@material-ui/core";
 
+// Constants
+import { DRAWER_WIDTH } from "../../constants";
+
 const useStyles = makeStyles(() => ({
-  main: {
-    width: 240,
-    border: "1px solid rgba(224, 224, 224, 1)",
+  listContainer: {
+    width: DRAWER_WIDTH,
     borderRadius: 4,
   },
-  listContainer: {
-    padding: 0,
+  appBar: {
+    position: "absolut",
   },
 }));
 
