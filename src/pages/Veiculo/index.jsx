@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 // Libs
-import { Button, Fab } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
-import AddIcon from "@material-ui/icons/Add";
 import { useHistory } from "react-router";
 
 // Service
@@ -76,16 +75,15 @@ function Veiculo() {
         >
           Alterar
         </Button>
+        <Button
+          className={classes.actions}
+          variant="contained"
+          color="primary"
+          onClick={() => history.push("/veiculos/cadastro")}
+        >
+          Incluir
+        </Button>
       </div>
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        className={classes.fab}
-        onClick={() => history.push("/veiculos/cadastro")}
-      >
-        <AddIcon />
-      </Fab>
     </div>
   );
 }
