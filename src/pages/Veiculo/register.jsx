@@ -8,6 +8,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  InputAdornment,
 } from "@material-ui/core";
 import { useHistory, useParams } from "react-router";
 
@@ -157,6 +158,9 @@ function VeiculoRegister() {
         fullWidth
         required
         margin="normal"
+        InputProps={{
+          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+        }}
       />
 
       <div className={classes.actionsToolbar}>
