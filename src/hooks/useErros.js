@@ -1,10 +1,16 @@
 import Validator from "../utils/validations";
 
 function UseErros() {
-  const handleUserInput = (e, validations, getForm, setForm) => {
+  const handleUserInput = async (e, validations, getForm, setForm) => {
     const { name, value } = e.target;
+    await setForm({ ...getForm, [name]: value });
     validateField(name, value, getForm, validations, setForm);
-    setForm({ ...getForm, [name]: value });
+  };
+
+  const handleTouch = (e, getForm, setForm) => {
+    const { name } = e.target;
+    getForm.formErrors[name].touched = true;
+    setForm({ ...getForm });
   };
 
   const validateField = (fieldName, value, getForm, validations, setForm) => {
@@ -28,20 +34,14 @@ function UseErros() {
       fieldValidationErrors[fieldName].text = "";
       fieldValidationErrors[fieldName].valid = true;
     }
-
-    setForm(
-      {
-        ...getForm,
-        formErrors: fieldValidationErrors,
-      },
-      validateForm(getForm, setForm)
-    );
+    validateForm(getForm, setForm, fieldValidationErrors);
   };
 
-  const validateForm = (getForm, setForm) => {
+  const validateForm = (getForm, setForm, formErrors) => {
     setForm({
       ...getForm,
-      formValid: getForm.usernameValid && getForm.passwordValid,
+      formErrors,
+      formValid: formErrors.username.valid && formErrors.password.valid,
     });
   };
 
@@ -52,7 +52,7 @@ function UseErros() {
     };
   };
 
-  return { handleUserInput, formatValid };
+  return { handleUserInput, formatValid, handleTouch };
 }
 
 export default UseErros;

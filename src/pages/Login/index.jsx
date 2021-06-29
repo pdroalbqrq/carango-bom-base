@@ -10,22 +10,23 @@ function Login() {
     username: "",
     password: "",
     formErrors: {
-      username: { valid: true, text: "" },
-      password: { valid: true, text: "" },
+      username: { valid: false, touched: false, text: "" },
+      password: { valid: false, touched: false, text: "" },
     },
-    formValid: true,
   });
 
-  const { handleUserInput, formatValid } = useErros();
+  const { handleUserInput, formatValid, handleTouch } = useErros();
   const history = useHistory();
 
   const validacoesLogin = [
     formatValid("tamanhoMinimo", ["Usuário", 5]),
     formatValid("tamanhoMaximo", ["Usuário", 25]),
+    formatValid("obrigatorio", ["Usuário"]),
   ];
   const validacoesSenha = [
-    formatValid("tamanhoMinimo", ["Usuário", 8]),
-    formatValid("tamanhoMaximo", ["Usuário", 50]),
+    formatValid("tamanhoMinimo", ["Senha", 8]),
+    formatValid("tamanhoMaximo", ["Senha", 50]),
+    formatValid("obrigatorio", ["Senha"]),
   ];
 
   return (
@@ -48,10 +49,17 @@ function Login() {
           name="username"
           id="usuario"
           label="Usuário"
-          onChange={(event) =>
-            handleUserInput(event, validacoesLogin, loginForm, setLoginForm)
+          onFocus={(event) => {
+            handleTouch(event, loginForm, setLoginForm);
+          }}
+          onChange={(event) => {
+            console.log(loginForm);
+            handleUserInput(event, validacoesLogin, loginForm, setLoginForm);
+          }}
+          error={
+            !loginForm.formErrors.username.valid &&
+            loginForm.formErrors.username.touched
           }
-          error={!loginForm.formErrors.username.valid}
           helperText={loginForm.formErrors.username.text}
           type="text"
           variant="outlined"
@@ -63,11 +71,17 @@ function Login() {
           name="password"
           id="senha"
           label="Senha"
+          onFocus={(event) => {
+            handleTouch(event, loginForm, setLoginForm);
+          }}
           onChange={(event) =>
             handleUserInput(event, validacoesSenha, loginForm, setLoginForm)
           }
           helperText={loginForm.formErrors.password.text}
-          error={!loginForm.formErrors.password.valid}
+          error={
+            !loginForm.formErrors.password.valid &&
+            loginForm.formErrors.password.touched
+          }
           type="text"
           variant="outlined"
           fullWidth
@@ -78,6 +92,7 @@ function Login() {
         <Button
           style={{ margin: 10 }}
           variant="contained"
+          disabled={!loginForm.formValid}
           color="primary"
           type="submit"
           onClick={() => history.push("/")}
