@@ -35,7 +35,10 @@ function VeiculoRegister() {
     formValid: true,
   });
   const classes = useStyles();
-  const { handleUserInput, formatValid } = useErros();
+  const { handleUserInput, formatValid, handleTouch, getError } = new useErros(
+    veiculo,
+    setVeiculo
+  );
   const history = useHistory();
   const { id } = useParams();
 
@@ -111,10 +114,9 @@ function VeiculoRegister() {
 
       <TextField
         value={veiculo.modelo}
-        onChange={(event) => {
-          handleUserInput(event, validacoesModelo, veiculo, setVeiculo);
-        }}
-        error={!veiculo.formErrors.modelo.valid}
+        onFocus={(event) => handleTouch(event)}
+        onChange={(event) => handleUserInput(event, validacoesModelo)}
+        error={getError("modelo")}
         helperText={veiculo.formErrors.modelo.text}
         name="modelo"
         id="modelo"
@@ -128,10 +130,9 @@ function VeiculoRegister() {
 
       <TextField
         value={veiculo.ano}
-        onChange={(event) => {
-          handleUserInput(event, validacoesAno, veiculo, setVeiculo);
-        }}
-        error={!veiculo.formErrors.ano.valid}
+        onFocus={(event) => handleTouch(event)}
+        onChange={(event) => handleUserInput(event, validacoesAno)}
+        error={getError("ano")}
         helperText={veiculo.formErrors.ano.text}
         name="ano"
         id="ano"
@@ -145,10 +146,9 @@ function VeiculoRegister() {
 
       <TextField
         value={veiculo.valor}
-        onChange={(event) => {
-          handleUserInput(event, validacoesValor, veiculo, setVeiculo);
-        }}
-        error={!veiculo.formErrors.valor.valid}
+        onFocus={(event) => handleTouch(event)}
+        onChange={(event) => handleUserInput(event, validacoesValor)}
+        error={getError("valor")}
         helperText={veiculo.formErrors.valor.text}
         name="valor"
         id="valor"
@@ -176,7 +176,7 @@ function VeiculoRegister() {
           variant="contained"
           color="primary"
           type="submit"
-          // disabled={!possoEnviar()}
+          disabled={!veiculo.formValid}
           className={classes.actions}
         >
           {id ? "Alterar" : "Cadastrar"}

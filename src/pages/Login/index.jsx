@@ -8,14 +8,17 @@ import useErros from "../../hooks/useErros";
 function Login() {
   const [loginForm, setLoginForm] = useState({
     username: "",
-    password: "",
+    senha: "",
     formErrors: {
       username: { valid: false, touched: false, text: "" },
-      password: { valid: false, touched: false, text: "" },
+      senha: { valid: false, touched: false, text: "" },
     },
   });
 
-  const { handleUserInput, formatValid, handleTouch } = useErros();
+  const { handleUserInput, formatValid, handleTouch, getError } = new useErros(
+    loginForm,
+    setLoginForm
+  );
   const history = useHistory();
 
   const validacoesLogin = [
@@ -50,16 +53,12 @@ function Login() {
           id="usuario"
           label="Usuário"
           onFocus={(event) => {
-            handleTouch(event, loginForm, setLoginForm);
+            handleTouch(event);
           }}
           onChange={(event) => {
-            console.log(loginForm);
-            handleUserInput(event, validacoesLogin, loginForm, setLoginForm);
+            handleUserInput(event, validacoesLogin);
           }}
-          error={
-            !loginForm.formErrors.username.valid &&
-            loginForm.formErrors.username.touched
-          }
+          error={getError("username")}
           helperText={loginForm.formErrors.username.text}
           type="text"
           variant="outlined"
@@ -68,20 +67,15 @@ function Login() {
           margin="normal"
         />
         <TextField
-          name="password"
+          name="senha"
           id="senha"
           label="Senha"
           onFocus={(event) => {
-            handleTouch(event, loginForm, setLoginForm);
+            handleTouch(event);
           }}
-          onChange={(event) =>
-            handleUserInput(event, validacoesSenha, loginForm, setLoginForm)
-          }
-          helperText={loginForm.formErrors.password.text}
-          error={
-            !loginForm.formErrors.password.valid &&
-            loginForm.formErrors.password.touched
-          }
+          onChange={(event) => handleUserInput(event, validacoesSenha)}
+          helperText={loginForm.formErrors.senha.text}
+          error={getError("senha")}
           type="text"
           variant="outlined"
           fullWidth

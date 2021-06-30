@@ -19,16 +19,18 @@ function UsuarioRegister() {
     formErrors: {
       nome: { valid: true, text: "" },
     },
-    formValid: true,
   });
   const classes = useStyles();
-  const { handleUserInput, formatValid } = useErros();
+  const { handleUserInput, formatValid, handleTouch, getError } = new useErros(
+    usuario,
+    setUsuario
+  );
   const history = useHistory();
   const { id } = useParams();
 
   const validacoesUsuario = [
-    formatValid("tamanhoMinimo", ["Marca", 3]),
-    formatValid("tamanhoMaximo", ["Marca", 50]),
+    formatValid("tamanhoMinimo", ["Usuário", 3]),
+    formatValid("tamanhoMaximo", ["Usuário", 50]),
   ];
 
   function cancelar() {
@@ -75,10 +77,9 @@ function UsuarioRegister() {
     >
       <TextField
         value={usuario.nome}
-        onChange={(event) => {
-          handleUserInput(event, validacoesUsuario, usuario, setUsuario);
-        }}
-        error={!usuario.formErrors.nome.valid}
+        onFocus={(event) => handleTouch(event)}
+        onChange={(event) => handleUserInput(event, validacoesUsuario)}
+        error={getError("nome")}
         helperText={usuario.formErrors.nome.text}
         name="nome"
         id="nome"
@@ -103,7 +104,7 @@ function UsuarioRegister() {
           variant="contained"
           color="primary"
           type="submit"
-          // disabled={!possoEnviar()}
+          disabled={!usuario.formValid}
           className={classes.actions}
         >
           {id ? "Alterar" : "Cadastrar"}

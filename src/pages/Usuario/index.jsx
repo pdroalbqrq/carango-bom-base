@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
-
 // Libs
-import { Button, Fab } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
-import AddIcon from "@material-ui/icons/Add";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-
 // Service
 import UsuarioService from "../../services/UsuarioService";
-
 // Style
 import { useStyles } from "./styles";
 
 const colunas = [{ field: "nome", headerName: "Nome", flex: 1 }];
 
-function Marca() {
+function Usuario() {
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioSelecionado, setUsuarioSelecionado] = useState();
   const classes = useStyles();
@@ -27,13 +23,13 @@ function Marca() {
   function excluir() {
     UsuarioService.excluir(usuarioSelecionado).then(() => {
       setUsuarioSelecionado(null);
-      carregarMarcas();
+      carregarUsuarios();
     });
   }
 
-  useEffect(() => carregarMarcas(), []);
+  useEffect(() => carregarUsuarios(), []);
 
-  function carregarMarcas() {
+  function carregarUsuarios() {
     UsuarioService.listar().then((dados) => setUsuarios(dados));
   }
 
@@ -66,18 +62,17 @@ function Marca() {
         >
           Alterar
         </Button>
+        <Button
+          className={classes.actions}
+          variant="contained"
+          color="primary"
+          onClick={() => history.push("/usuario/cadastro")}
+        >
+          Inserir
+        </Button>
       </div>
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        className={classes.fab}
-        onClick={() => history.push("/usuario/cadastro")}
-      >
-        <AddIcon />
-      </Fab>
     </div>
   );
 }
 
-export default Marca;
+export default Usuario;

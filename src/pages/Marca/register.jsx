@@ -19,11 +19,13 @@ function MarcaRegister() {
     formErrors: {
       marca: { valid: true, text: "" },
     },
-    formValid: true,
   });
 
   const classes = useStyles();
-  const { handleUserInput, formatValid } = useErros();
+  const { handleUserInput, formatValid, getError, handleTouch } = new useErros(
+    marca,
+    setMarca
+  );
   const history = useHistory();
   const { id } = useParams();
 
@@ -64,10 +66,9 @@ function MarcaRegister() {
     >
       <TextField
         value={marca.marca}
-        onChange={(event) => {
-          handleUserInput(event, validacoesMarca, marca, setMarca);
-        }}
-        error={!marca.formErrors.marca.valid}
+        onFocus={(event) => handleTouch(event)}
+        onChange={(event) => handleUserInput(event, validacoesMarca)}
+        error={getError("marca")}
         helperText={marca.formErrors.marca.text}
         name="marca"
         id="marca"
@@ -92,7 +93,7 @@ function MarcaRegister() {
           variant="contained"
           color="primary"
           type="submit"
-          // disabled={!possoEnviar()}
+          disabled={!marca.formValid}
           className={classes.actions}
         >
           {id ? "Alterar" : "Cadastrar"}

@@ -8,37 +8,27 @@ import UseErros from "../../hooks/useErros";
 function Cadastro() {
   const [usuarioForm, setUsuarioForm] = useState({
     username: "",
-    password: "",
-    confirmPassword: "",
+    senha: "",
+    confirmarSenha: "",
     formErrors: {
       username: { valid: true, text: "" },
-      password: { valid: true, text: "" },
-      confirmPassword: { valid: true, text: "" },
+      senha: { valid: true, text: "" },
+      confirmarSenha: { valid: true, text: "" },
     },
-    formValid: true,
   });
 
-  const formValidation = new UseErros();
+  const { handleUserInput, formatValid, handleTouch, getError } = new UseErros(
+    usuarioForm,
+    setUsuarioForm
+  );
 
   const validacoesUsuario = [
-    {
-      nome: "tamanhoMinimo",
-      atributos: ["Usuário", 5],
-    },
-    {
-      nome: "tamanhoMaximo",
-      atributos: ["Usuário", 25],
-    },
+    formatValid("tamanhoMinimo", ["Usuário", 5]),
+    formatValid("tamanhoMaximo", ["Usuário", 25]),
   ];
   const validacoesSenha = [
-    {
-      nome: "tamanhoMinimo",
-      atributos: ["Senha", 8],
-    },
-    {
-      nome: "tamanhoMaximo",
-      atributos: ["Senha", 50],
-    },
+    formatValid("tamanhoMinimo", ["Senha", 8]),
+    formatValid("tamanhoMaximo", ["Senha", 50]),
   ];
 
   const history = useHistory();
@@ -65,33 +55,21 @@ function Cadastro() {
           type="text"
           variant="outlined"
           fullWidth
-          onChange={(event) =>
-            formValidation.handleUserInput(
-              event,
-              validacoesUsuario,
-              usuarioForm,
-              setUsuarioForm
-            )
-          }
-          error={!usuarioForm.formErrors.username.valid}
+          onFocus={(event) => handleTouch(event)}
+          onChange={(event) => handleUserInput(event, validacoesUsuario)}
+          error={getError("username")}
           helperText={usuarioForm.formErrors.username.text}
           required
           margin="normal"
         />
         <TextField
-          name="password"
+          name="senha"
           id="senha"
           label="Senha"
-          onChange={(event) => {
-            formValidation.handleUserInput(
-              event,
-              validacoesSenha,
-              usuarioForm,
-              setUsuarioForm
-            );
-          }}
-          error={!usuarioForm.formErrors.password.valid}
-          helperText={usuarioForm.formErrors.password.text}
+          onFocus={(event) => handleTouch(event)}
+          onChange={(event) => handleUserInput(event, validacoesSenha)}
+          error={getError("senha")}
+          helperText={usuarioForm.formErrors.senha.text}
           type="text"
           variant="outlined"
           fullWidth
@@ -99,20 +77,14 @@ function Cadastro() {
           margin="normal"
         />
         <TextField
-          name="confirmPassword"
+          name="confirmarSenha"
           id="repetirSenha"
           label="Repetir senha"
           type="text"
-          onChange={(event) =>
-            formValidation.handleUserInput(
-              event,
-              validacoesSenha,
-              usuarioForm,
-              setUsuarioForm
-            )
-          }
-          error={!usuarioForm.formErrors.confirmPassword.valid}
-          helperText={usuarioForm.formErrors.confirmPassword.text}
+          onFocus={(event) => handleTouch(event)}
+          onChange={(event) => handleUserInput(event, validacoesSenha)}
+          error={getError("confirmarSenha")}
+          helperText={usuarioForm.formErrors.confirmarSenha.text}
           variant="outlined"
           fullWidth
           required
@@ -124,6 +96,7 @@ function Cadastro() {
           variant="contained"
           color="primary"
           type="submit"
+          disabled={!usuarioForm.formValid}
         >
           Cadastrar
         </Button>
