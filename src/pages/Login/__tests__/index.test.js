@@ -1,4 +1,10 @@
+// Lib
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
+import Routes from "../../../routes";
+
+// Component
 import Login from "../index";
 
 describe("Login Component Test", () => {
@@ -7,14 +13,20 @@ describe("Login Component Test", () => {
   let senhaInput;
   let userValue;
   let passValue;
+  const history = createMemoryHistory();
 
   const genValues = (qtd) => {
     return Math.random().toString(36).substring(qtd);
   };
 
-  beforeEach(() => {
-    render(<Login />);
-    submitButton = screen.getByRole("button", { name: "Entrar" });
+  beforeAll(() => {
+    render(
+      <Router history={history}>
+        <Routes />
+      </Router>
+    );
+    history.push("/login");
+    submitButton = screen.getByRole("button", { id: "test-id" });
     usernameInput = screen.getByRole("textbox", { name: "Usuário" });
     senhaInput = screen.getByRole("textbox", { name: "Senha" });
   });
@@ -59,10 +71,33 @@ describe("Login Component Test", () => {
     passValue = genValues(10);
 
     await waitFor(() => {
+      fireEvent.focusIn(usernameInput);
+      fireEvent.focusIn(senhaInput);
+    });
+    await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
     });
 
-    expect(submitButton).toBeDisabled();
+    // console.log(usernameInput);
+
+    expect(submitButton).toBeEnabled();
+  });
+
+  test("deve redirecionar para history '/'", async () => {
+    userValue = genValues(6);
+    passValue = genValues(10);
+
+    await waitFor(() => {
+      fireEvent.focusIn(usernameInput);
+      fireEvent.focusIn(senhaInput);
+      fireEvent.change(usernameInput, { target: { value: userValue } });
+      fireEvent.change(senhaInput, { target: { value: passValue } });
+    });
+
+    fireEvent.click(submitButton);
+
+    expect(history.length).toBe(3);
+    expect(history.location.pathname).toBe("/");
   });
 });

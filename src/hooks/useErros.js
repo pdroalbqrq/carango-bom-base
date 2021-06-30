@@ -2,31 +2,28 @@ import { getElementError } from "@testing-library/react";
 import Validator from "../utils/validations";
 
 function UseErros(getForm, setForm) {
-  this.getForm = getForm;
-  this.setForm = setForm;
-
   const handleUserInput = async (e, validations) => {
     const { name, value } = e.target;
-    const newForm = { ...this.getForm, [name]: value };
+    const newForm = { ...getForm, [name]: value };
 
-    await this.setForm(newForm);
-    this.getForm = newForm;
+    await setForm(newForm);
+    getForm = newForm;
 
     validateField(name, value, validations);
   };
 
   const handleTouch = (e) => {
     const { name } = e.target;
-    const contidion = this.getForm.formErrors[name];
+    const contidion = getForm.formErrors[name];
 
     if (contidion.touched) return;
 
     contidion.touched = true;
-    this.setForm({ ...this.getForm });
+    setForm({ ...getForm });
   };
 
   const validateField = (fieldName, value, validations) => {
-    let fieldValidationErrors = this.getForm.formErrors;
+    let fieldValidationErrors = getForm.formErrors;
     let validationsFound = [];
 
     validations.forEach((validation) => {
@@ -52,18 +49,15 @@ function UseErros(getForm, setForm) {
   const validateForm = (formErrors) => {
     const isValidValues = Object.values(formErrors).map((val) => val.valid);
 
-    this.setForm({
-      ...this.getForm,
+    setForm({
+      ...getForm,
       formErrors,
       formValid: isValidValues.every((isVal) => isVal === true),
     });
   };
 
   const getError = (name) => {
-    return (
-      !this.getForm.formErrors[name].valid &&
-      this.getForm.formErrors[name].touched
-    );
+    return !getForm.formErrors[name].valid && getForm.formErrors[name].touched;
   };
 
   const formatValid = (name, attributes) => {

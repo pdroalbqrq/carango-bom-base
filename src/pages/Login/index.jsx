@@ -15,7 +15,7 @@ function Login() {
     },
   });
 
-  const { handleUserInput, formatValid, handleTouch, getError } = new useErros(
+  const { handleUserInput, formatValid, handleTouch, getError } = useErros(
     loginForm,
     setLoginForm
   );
@@ -52,12 +52,8 @@ function Login() {
           name="username"
           id="usuario"
           label="Usuário"
-          onFocus={(event) => {
-            handleTouch(event);
-          }}
-          onChange={(event) => {
-            handleUserInput(event, validacoesLogin);
-          }}
+          onFocus={(event) => handleTouch(event)}
+          onChange={(event) => handleUserInput(event, validacoesLogin)}
           error={getError("username")}
           helperText={loginForm.formErrors.username.text}
           type="text"
@@ -89,7 +85,11 @@ function Login() {
           disabled={!loginForm.formValid}
           color="primary"
           type="submit"
-          onClick={() => history.push("/")}
+          id="test-id"
+          onClick={() => {
+            console.log("clicou");
+            history.push("/");
+          }}
         >
           Entrar
         </Button>

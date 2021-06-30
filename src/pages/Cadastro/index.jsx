@@ -3,7 +3,7 @@ import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 
 import { useHistory } from "react-router";
 
-import UseErros from "../../hooks/useErros";
+import useErros from "../../hooks/useErros";
 
 function Cadastro() {
   const [usuarioForm, setUsuarioForm] = useState({
@@ -17,7 +17,7 @@ function Cadastro() {
     },
   });
 
-  const { handleUserInput, formatValid, handleTouch, getError } = new UseErros(
+  const { handleUserInput, formatValid, handleTouch, getError } = useErros(
     usuarioForm,
     setUsuarioForm
   );
