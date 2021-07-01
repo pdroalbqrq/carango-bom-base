@@ -16,7 +16,7 @@ import VeiculoRegister from "../pages/Veiculo/register";
 import Usuario from "../pages/Usuario";
 import UsuarioRegister from "../pages/Usuario/register";
 
-import Dashboard from "../pages/DashBoard";
+import Dashboard from "../pages/Dashboard";
 
 function Routes() {
   return (

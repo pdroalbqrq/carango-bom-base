@@ -49,6 +49,7 @@ function Login() {
           Entrar
         </Typography>
         <TextField
+          inputProps={{ "data-testid": "username-input" }}
           name="username"
           id="usuario"
           label="Usuário"
@@ -63,6 +64,7 @@ function Login() {
           margin="normal"
         />
         <TextField
+          inputProps={{ "data-testid": "password-input" }}
           name="senha"
           id="senha"
           label="Senha"
@@ -85,11 +87,8 @@ function Login() {
           disabled={!loginForm.formValid}
           color="primary"
           type="submit"
-          id="test-id"
-          onClick={() => {
-            console.log("clicou");
-            history.push("/");
-          }}
+          data-testid="submit-btn"
+          onClick={() => history.push("/")}
         >
           Entrar
         </Button>

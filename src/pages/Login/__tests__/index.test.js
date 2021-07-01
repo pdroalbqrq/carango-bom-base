@@ -1,50 +1,67 @@
 // Lib
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
-import Routes from "../../../routes";
+import { Router, Route } from "react-router-dom";
 
-// Component
+// Components
 import Login from "../index";
 
 describe("Login Component Test", () => {
-  let submitButton;
-  let usernameInput;
-  let senhaInput;
   let userValue;
   let passValue;
   const history = createMemoryHistory();
 
   const genValues = (qtd) => {
-    return Math.random().toString(36).substring(qtd);
+    let testString = "";
+
+    for (let i = 0; i < qtd; i++) {
+      testString = testString + "a";
+    }
+
+    return testString;
   };
 
   beforeAll(() => {
+    history.push("/login");
+  });
+
+  beforeEach(() => {
     render(
       <Router history={history}>
-        <Routes />
+        <Route exact path="/login" component={Login} />
       </Router>
     );
-    history.push("/login");
-    submitButton = screen.getByRole("button", { id: "test-id" });
-    usernameInput = screen.getByRole("textbox", { name: "Usuário" });
-    senhaInput = screen.getByRole("textbox", { name: "Senha" });
   });
 
   test("deve iniciar o formulario inválido com todos os campos vazios", async () => {
-    expect(submitButton).toBeDisabled();
-
-    await waitFor(() => {
-      fireEvent.focusIn(usernameInput);
-      fireEvent.focusIn(senhaInput);
-    });
+    const submitButton = screen.getByTestId("submit-btn");
 
     expect(submitButton).toBeDisabled();
+  });
+
+  test("campo 'Usuário' está recebendo evento onFocus", async () => {
+    const usernameInput = screen.getByTestId("username-input");
+
+    usernameInput.focus();
+
+    expect(usernameInput).toHaveFocus();
+  });
+
+  test("campo 'Senha' está recebendo evento onFocus", async () => {
+    const senhaInput = screen.getByTestId("password-input");
+
+    senhaInput.focus();
+
+    expect(senhaInput).toHaveFocus();
   });
 
   test("formulario inválido com erro de tamanho minimo", async () => {
     userValue = genValues(3);
     passValue = genValues(7);
+
+    const submitButton = screen.getByTestId("submit-btn");
+    const usernameInput = screen.getByTestId("username-input");
+    const senhaInput = screen.getByTestId("password-input");
 
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
@@ -58,6 +75,10 @@ describe("Login Component Test", () => {
     userValue = genValues(26);
     passValue = genValues(51);
 
+    const submitButton = screen.getByTestId("submit-btn");
+    const usernameInput = screen.getByTestId("username-input");
+    const senhaInput = screen.getByTestId("password-input");
+
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
@@ -70,16 +91,14 @@ describe("Login Component Test", () => {
     userValue = genValues(6);
     passValue = genValues(10);
 
-    await waitFor(() => {
-      fireEvent.focusIn(usernameInput);
-      fireEvent.focusIn(senhaInput);
-    });
+    const submitButton = screen.getByTestId("submit-btn");
+    const usernameInput = screen.getByTestId("username-input");
+    const senhaInput = screen.getByTestId("password-input");
+
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
     });
-
-    // console.log(usernameInput);
 
     expect(submitButton).toBeEnabled();
   });
@@ -88,9 +107,11 @@ describe("Login Component Test", () => {
     userValue = genValues(6);
     passValue = genValues(10);
 
+    const submitButton = screen.getByTestId("submit-btn");
+    const usernameInput = screen.getByTestId("username-input");
+    const senhaInput = screen.getByTestId("password-input");
+
     await waitFor(() => {
-      fireEvent.focusIn(usernameInput);
-      fireEvent.focusIn(senhaInput);
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
     });
