@@ -9,6 +9,9 @@ import Login from "../index";
 describe("Login Component Test", () => {
   let userValue;
   let passValue;
+  let submitButton;
+  let usernameInput;
+  let senhaInput;
   const history = createMemoryHistory();
 
   const genValues = (qtd) => {
@@ -31,37 +34,35 @@ describe("Login Component Test", () => {
         <Route exact path="/login" component={Login} />
       </Router>
     );
+
+    submitButton = screen.getByTestId("submit-btn");
+    usernameInput = screen.getByTestId("username-input");
+    senhaInput = screen.getByTestId("password-input");
   });
 
-  test("deve iniciar o formulario inválido com todos os campos vazios", async () => {
-    const submitButton = screen.getByTestId("submit-btn");
-
+  test("deve iniciar o formulario inválido com todos os campos vazios", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  test("campo 'Usuário' está recebendo evento onFocus", async () => {
-    const usernameInput = screen.getByTestId("username-input");
-
+  test("campo 'Usuário' está mostrando erro no evento onFocus", () => {
     usernameInput.focus();
 
-    expect(usernameInput).toHaveFocus();
+    const closestDiv = usernameInput.closest("div");
+
+    expect(closestDiv).toHaveClass("Mui-error");
   });
 
-  test("campo 'Senha' está recebendo evento onFocus", async () => {
-    const senhaInput = screen.getByTestId("password-input");
-
+  test("campo 'Senha' está mostrando erro no evento onFocus", () => {
     senhaInput.focus();
 
-    expect(senhaInput).toHaveFocus();
+    const closestDiv = senhaInput.closest("div");
+
+    expect(closestDiv).toHaveClass("Mui-error");
   });
 
   test("formulario inválido com erro de tamanho minimo", async () => {
     userValue = genValues(3);
     passValue = genValues(7);
-
-    const submitButton = screen.getByTestId("submit-btn");
-    const usernameInput = screen.getByTestId("username-input");
-    const senhaInput = screen.getByTestId("password-input");
 
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
@@ -75,10 +76,6 @@ describe("Login Component Test", () => {
     userValue = genValues(26);
     passValue = genValues(51);
 
-    const submitButton = screen.getByTestId("submit-btn");
-    const usernameInput = screen.getByTestId("username-input");
-    const senhaInput = screen.getByTestId("password-input");
-
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
@@ -90,10 +87,6 @@ describe("Login Component Test", () => {
   test("formulario válido", async () => {
     userValue = genValues(6);
     passValue = genValues(10);
-
-    const submitButton = screen.getByTestId("submit-btn");
-    const usernameInput = screen.getByTestId("username-input");
-    const senhaInput = screen.getByTestId("password-input");
 
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
@@ -107,10 +100,6 @@ describe("Login Component Test", () => {
     userValue = genValues(6);
     passValue = genValues(10);
 
-    const submitButton = screen.getByTestId("submit-btn");
-    const usernameInput = screen.getByTestId("username-input");
-    const senhaInput = screen.getByTestId("password-input");
-
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
@@ -120,5 +109,23 @@ describe("Login Component Test", () => {
 
     expect(history.length).toBe(3);
     expect(history.location.pathname).toBe("/");
+
+    history.push("/login");
+  });
+
+  test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
+    userValue = genValues(6);
+    passValue = genValues(10);
+
+    const registerButton = screen.getByTestId("register-btn");
+
+    await waitFor(() => {
+      fireEvent.change(usernameInput, { target: { value: userValue } });
+      fireEvent.change(senhaInput, { target: { value: passValue } });
+    });
+
+    fireEvent.click(registerButton);
+
+    expect(history.location.pathname).toBe("/cadastro");
   });
 });

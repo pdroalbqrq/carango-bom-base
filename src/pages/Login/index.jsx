@@ -94,6 +94,7 @@ function Login() {
         </Button>
 
         <Link
+          data-testid="register-btn"
           onClick={() => history.push("/cadastro")}
           style={{ cursor: "pointer" }}
         >
