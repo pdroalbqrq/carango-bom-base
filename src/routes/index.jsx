@@ -21,6 +21,10 @@ import Dashboard from "../pages/Dashboard";
 function Routes() {
   return (
     <Switch>
+      {/* Login */}
+      <Route exact path="/login" component={Login} />
+      {/* Cadastro */}
+      <Route exact path="/cadastro" component={Cadastro} />
       {/* Veículos */}
       <Route exact path="/" component={Veiculo} />
       <Route exact path="/veiculos/cadastro" component={VeiculoRegister} />
@@ -29,14 +33,10 @@ function Routes() {
       <Route exact path="/marcas" component={Marca} />
       <Route exact path="/marcas/cadastro" component={MarcaRegister} />
       <Route exact path="/marcas/edicao/:id" component={MarcaRegister} />
-      {/* Login */}
-      <Route exact path="/login" component={Login} />
-      {/* Cadastro */}
-      <Route exact path="/cadastro" component={Cadastro} />
       {/* Usuarios */}
       <Route exact path="/usuarios" component={Usuario} />
-      <Route exact path="/usuario/cadastro" component={UsuarioRegister} />
-      <Route exact path="/usuario/edicao/:id" component={UsuarioRegister} />
+      <Route exact path="/usuarios/cadastro" component={UsuarioRegister} />
+      <Route exact path="/usuarios/edicao/:id" component={UsuarioRegister} />
       {/* DashBoard */}
       <Route exact path="/dashboard" component={Dashboard} />
     </Switch>
