@@ -38,7 +38,7 @@ function DashBoard() {
   const classes = useStyles();
 
   return (
-    <Grid container justify="center" spacing={8}>
+    <Grid container justify="center" spacing={8} data-testid="dashboard-grid">
       {dataDashMOCK.map((value, index) => (
         <Grid key={`${value.nomeMarca}-${index}`} item>
           <Paper className={classes.paper} elevation={3}>
