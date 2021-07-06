@@ -17,7 +17,7 @@ function UsuarioRegister() {
   const [usuario, setUsuario] = useState({
     nome: "",
     formErrors: {
-      nome: { valid: true, text: "" },
+      nome: { valid: false, text: "" },
     },
   });
   const classes = useStyles();
@@ -30,18 +30,24 @@ function UsuarioRegister() {
 
   const validacoesUsuario = [
     formatValid("tamanhoMinimo", ["Usuário", 3]),
-    formatValid("tamanhoMaximo", ["Usuário", 50]),
+    formatValid("tamanhoMaximo", ["Usuário", 25]),
+    formatValid("obrigatorio", ["Usuário"]),
   ];
 
-  function cancelar() {
-    history.goBack();
+  function confirm() {
+    history.push("/usuarios");
   }
 
   useEffect(() => {
     if (id) {
+      let isSubscribed = true;
       UsuarioService.consultar(id).then((value) => {
-        setUsuario({ ...usuario, ...value });
+        console.log(value);
+        if (isSubscribed) {
+          setUsuario({ ...usuario, ...value });
+        }
       });
+      return () => (isSubscribed = false);
     }
   }, [id]);
 
@@ -49,33 +55,31 @@ function UsuarioRegister() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
-
-        // if (possoEnviar()) {
-        //   if (id) {
-        //     UsuarioService.alterar({
-        //       id,
-        //       marca: usuario.marca,
-        //       modelo: usuario.modelo,
-        //       ano: usuario.ano,
-        //       valor: usuario.valor,
-        //     }).then((res) => {
-        //       history.goBack();
-        //     });
-        //   } else {
-        //     UsuarioService.cadastrar({
-        //       marca: usuario.marca,
-        //       modelo: usuario.modelo,
-        //       ano: usuario.ano,
-        //       valor: usuario.valor,
-        //     }).then((res) => {
-        //       setUsuario("");
-        //       history.goBack();
-        //     });
-        //   }
-        // }
+        const { nome } = usuario;
+        if (usuario.formValid) {
+          if (id) {
+            UsuarioService.alterar({
+              id,
+              nome,
+            }).then((res) => {
+              confirm();
+            });
+          } else {
+            UsuarioService.cadastrar({
+              nome,
+            }).then((res) => {
+              setUsuario({
+                ...usuario,
+                nome: "",
+              });
+              confirm();
+            });
+          }
+        }
       }}
     >
       <TextField
+        inputProps={{ "data-testid": "name-input" }}
         value={usuario.nome}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesUsuario)}
@@ -93,14 +97,16 @@ function UsuarioRegister() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="cancel-btn"
           variant="contained"
           color="secondary"
-          onClick={cancelar}
+          onClick={confirm}
           className={classes.actions}
         >
           Cancelar
         </Button>
         <Button
+          data-testid="submit-btn"
           variant="contained"
           color="primary"
           type="submit"

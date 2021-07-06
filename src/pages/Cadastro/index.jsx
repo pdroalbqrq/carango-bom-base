@@ -11,9 +11,9 @@ function Cadastro() {
     senha: "",
     confirmarSenha: "",
     formErrors: {
-      username: { valid: true, text: "" },
-      senha: { valid: true, text: "" },
-      confirmarSenha: { valid: true, text: "" },
+      username: { valid: false, text: "" },
+      senha: { valid: false, text: "" },
+      confirmarSenha: { valid: false, text: "" },
     },
   });
 
@@ -25,10 +25,12 @@ function Cadastro() {
   const validacoesUsuario = [
     formatValid("tamanhoMinimo", ["Usuário", 5]),
     formatValid("tamanhoMaximo", ["Usuário", 25]),
+    formatValid("obrigatorio", ["Usuário"]),
   ];
   const validacoesSenha = [
     formatValid("tamanhoMinimo", ["Senha", 8]),
     formatValid("tamanhoMaximo", ["Senha", 50]),
+    formatValid("obrigatorio", ["Senha"]),
   ];
 
   const history = useHistory();
@@ -49,6 +51,7 @@ function Cadastro() {
           Cadastre-se
         </Typography>
         <TextField
+          inputProps={{ "data-testid": "username-input" }}
           name="username"
           id="usuario"
           label="Usuário"
@@ -63,6 +66,7 @@ function Cadastro() {
           margin="normal"
         />
         <TextField
+          inputProps={{ "data-testid": "password-input" }}
           name="senha"
           id="senha"
           label="Senha"
@@ -77,6 +81,7 @@ function Cadastro() {
           margin="normal"
         />
         <TextField
+          inputProps={{ "data-testid": "confirmpassword-input" }}
           name="confirmarSenha"
           id="repetirSenha"
           label="Repetir senha"
@@ -92,15 +97,18 @@ function Cadastro() {
         />
 
         <Button
+          data-testid="submit-btn"
           style={{ margin: 10 }}
           variant="contained"
           color="primary"
           type="submit"
+          onClick={() => history.push("/login")}
           disabled={!usuarioForm.formValid}
         >
           Cadastrar
         </Button>
         <Link
+          data-testid="login-btn"
           onClick={() => history.push("/login")}
           style={{ cursor: "pointer" }}
         >
