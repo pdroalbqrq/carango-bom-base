@@ -17,7 +17,7 @@ function Usuario() {
   const history = useHistory();
 
   function alterar() {
-    history.push("/usuario/edicao/" + usuarioSelecionado.id);
+    history.push("/usuarios/edicao/" + usuarioSelecionado.id);
   }
 
   function excluir() {
@@ -45,6 +45,7 @@ function Usuario() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="delete-btn"
           className={classes.actions}
           variant="contained"
           color="secondary"
@@ -54,6 +55,7 @@ function Usuario() {
           Excluir
         </Button>
         <Button
+          data-testid="edit-btn"
           className={classes.actions}
           variant="contained"
           color="primary"
@@ -63,10 +65,11 @@ function Usuario() {
           Alterar
         </Button>
         <Button
+          data-testid="insert-btn"
           className={classes.actions}
           variant="contained"
           color="primary"
-          onClick={() => history.push("/usuario/cadastro")}
+          onClick={() => history.push("/usuarios/cadastro")}
         >
           Inserir
         </Button>

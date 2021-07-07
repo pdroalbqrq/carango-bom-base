@@ -33,15 +33,6 @@ const validations = {
 
     return { valido: true, texto: "" };
   },
-  confirmarSenha: (dado, campo, tamanho, a, b, c) => {
-    console.log("dado", dado);
-    console.log("campo", campo);
-    console.log("tamanho", tamanho);
-    console.log("nao sei ", a);
-    console.log("nao sei ", b);
-    console.log("nao sei ", c);
-    return { valido: true, texto: "" };
-  },
 };
 
 export default validations;

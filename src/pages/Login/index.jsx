@@ -5,20 +5,20 @@ import { useHistory } from "react-router";
 
 import useErros from "../../hooks/useErros";
 
+import UsuarioService from "../../services/UsuarioService";
+
 function Login() {
   const [loginForm, setLoginForm] = useState({
     username: "",
-    senha: "",
+    password: "",
     formErrors: {
       username: { valid: false, touched: false, text: "" },
-      senha: { valid: false, touched: false, text: "" },
+      password: { valid: false, touched: false, text: "" },
     },
   });
 
-  const { handleUserInput, formatValid, handleTouch, getError } = useErros(
-    loginForm,
-    setLoginForm
-  );
+  const { handleUserInput, formatValid, handleTouch, getError, formValue } =
+    useErros(loginForm, setLoginForm);
   const history = useHistory();
 
   const validacoesLogin = [
@@ -27,7 +27,7 @@ function Login() {
     formatValid("obrigatorio", ["Usuário"]),
   ];
   const validacoesSenha = [
-    formatValid("tamanhoMinimo", ["Senha", 8]),
+    formatValid("tamanhoMinimo", ["Senha", 7]),
     formatValid("tamanhoMaximo", ["Senha", 50]),
     formatValid("obrigatorio", ["Senha"]),
   ];
@@ -36,6 +36,12 @@ function Login() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        if (loginForm.formValid) {
+          UsuarioService.autenticar(formValue()).then((res) => {
+            console.log(res);
+            history.push("/");
+          });
+        }
       }}
     >
       <Grid
@@ -65,15 +71,15 @@ function Login() {
         />
         <TextField
           inputProps={{ "data-testid": "password-input" }}
-          name="senha"
+          name="password"
           id="senha"
           label="Senha"
           onFocus={(event) => {
             handleTouch(event);
           }}
           onChange={(event) => handleUserInput(event, validacoesSenha)}
-          helperText={loginForm.formErrors.senha.text}
-          error={getError("senha")}
+          helperText={loginForm.formErrors.password.text}
+          error={getError("password")}
           type="text"
           variant="outlined"
           fullWidth
@@ -88,7 +94,6 @@ function Login() {
           color="primary"
           type="submit"
           data-testid="submit-btn"
-          onClick={() => history.push("/")}
         >
           Entrar
         </Button>

@@ -42,6 +42,12 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/config/*",
+      "src/constants/*"
+    ]
+  },
   "devDependencies": {
     "@testing-library/user-event": "^12.8.3"
   }

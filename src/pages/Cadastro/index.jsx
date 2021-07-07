@@ -5,6 +5,8 @@ import { useHistory } from "react-router";
 
 import useErros from "../../hooks/useErros";
 
+import UsuarioService from "../../services/UsuarioService";
+
 function Cadastro() {
   const [usuarioForm, setUsuarioForm] = useState({
     username: "",
@@ -28,7 +30,7 @@ function Cadastro() {
     formatValid("obrigatorio", ["Usuário"]),
   ];
   const validacoesSenha = [
-    formatValid("tamanhoMinimo", ["Senha", 8]),
+    formatValid("tamanhoMinimo", ["Senha", 7]),
     formatValid("tamanhoMaximo", ["Senha", 50]),
     formatValid("obrigatorio", ["Senha"]),
   ];
@@ -38,6 +40,16 @@ function Cadastro() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        console.log(usuarioForm);
+        if (usuarioForm.formValid) {
+          UsuarioService.cadastrar({
+            username: usuarioForm.username,
+            password: usuarioForm.senha,
+          }).then((res) => {
+            console.log(res);
+            history.push("/login");
+          });
+        }
       }}
     >
       <Grid
@@ -102,7 +114,6 @@ function Cadastro() {
           variant="contained"
           color="primary"
           type="submit"
-          onClick={() => history.push("/login")}
           disabled={!usuarioForm.formValid}
         >
           Cadastrar

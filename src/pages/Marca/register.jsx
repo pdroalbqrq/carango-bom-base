@@ -15,34 +15,38 @@ import { useStyles } from "./styles";
 
 function MarcaRegister() {
   const [marca, setMarca] = useState({
-    marca: "",
+    nome: "",
     formErrors: {
-      marca: { valid: true, text: "" },
+      nome: { valid: false, text: "" },
     },
   });
 
   const classes = useStyles();
-  const { handleUserInput, formatValid, getError, handleTouch } = new useErros(
-    marca,
-    setMarca
-  );
+  const { handleUserInput, formatValid, getError, handleTouch, formValue } =
+    new useErros(marca, setMarca);
   const history = useHistory();
   const { id } = useParams();
 
   const validacoesMarca = [
     formatValid("tamanhoMinimo", ["Marca", 3]),
-    formatValid("tamanhoMaximo", ["Marca", 50]),
+    formatValid("tamanhoMaximo", ["Marca", 25]),
+    formatValid("obrigatorio", ["Marca"]),
   ];
 
-  function cancelar() {
-    history.goBack();
+  function confirmar() {
+    history.push("/marcas");
   }
 
   useEffect(() => {
     if (id) {
-      MarcaService.consultar(id).then((m) =>
-        setMarca({ ...marca, marca: m.nome })
-      );
+      let isSubscribed = true;
+      MarcaService.consultar(id).then((m) => {
+        if (isSubscribed) {
+          setMarca({ ...marca, nome: m.nome });
+        }
+      });
+
+      return () => (isSubscribed = false);
     }
   }, [id]);
 
@@ -50,27 +54,28 @@ function MarcaRegister() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        // if (possoEnviar()) {
-        //   if (id) {
-        //     MarcaService.alterar({ id, nome: marca }).then((res) => {
-        //       history.goBack();
-        //     });
-        //   } else {
-        //     MarcaService.cadastrar({ nome: marca }).then((res) => {
-        //       setMarca("");
-        //       history.goBack();
-        //     });
-        //   }
-        // }
+        if (marca.formValid) {
+          if (id) {
+            MarcaService.alterar({ id, ...formValue() }).then((res) => {
+              confirmar();
+            });
+          } else {
+            MarcaService.cadastrar(formValue()).then((res) => {
+              setMarca({ ...marca, marca: "" });
+              confirmar();
+            });
+          }
+        }
       }}
     >
       <TextField
-        value={marca.marca}
+        inputProps={{ "data-testid": "marca-input" }}
+        value={marca.nome || ""}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesMarca)}
-        error={getError("marca")}
-        helperText={marca.formErrors.marca.text}
-        name="marca"
+        error={getError("nome")}
+        helperText={marca.formErrors.nome.text}
+        name="nome"
         id="marca"
         label="Marca"
         type="text"
@@ -82,14 +87,15 @@ function MarcaRegister() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="cancel-btn"
           variant="contained"
           color="secondary"
-          onClick={cancelar}
           className={classes.actions}
         >
           Cancelar
         </Button>
         <Button
+          data-testid="submit-btn"
           variant="contained"
           color="primary"
           type="submit"

@@ -1,63 +1,52 @@
 import baseUrl from "../config/environment";
+import { header } from "../utils/http-header";
 
-let users = [
-  {
-    id: 1,
-    nome: "Pedro",
-  },
-  {
-    id: 2,
-    nome: "Diego",
-  },
-  {
-    id: 3,
-    nome: "José",
-  },
-];
 const UsuarioService = {
   cadastrar(usuario) {
-    // const [lastItem] = users.slice(-1);
-    // users.push({ id: lastItem.id + 1, nome: usuario.nome });
-
-    // return Promise.resolve({ status: 200 }).then((r) => r);
-    return fetch(`${baseUrl}/usuarios/`, {
+    return fetch(`${baseUrl}/usuarios`, {
       method: "POST",
       body: JSON.stringify(usuario),
-    }).then((r) => {
-      return r.json();
-    });
+      headers: header(),
+    }).then((r) => r.json());
+  },
+
+  autenticar(usuario) {
+    return fetch(`${baseUrl}/auth`, {
+      method: "POST",
+      body: JSON.stringify(usuario),
+      headers: header(),
+    })
+      .then((r) => r.json())
+      .then((r) => {
+        localStorage.setItem("jwt", `${r.type} ${r.token}`);
+        return r;
+      });
   },
 
   alterar(usuario) {
-    // const foundUsers = users.findIndex((user) => +user.id == +usuario.id);
-
-    // users[foundUsers] = usuario;
-
-    // return Promise.resolve(users).then((r) => r);
     return fetch(`${baseUrl}/usuarios/` + usuario.id, {
       method: "PUT",
       body: JSON.stringify(usuario),
+      headers: header(),
     }).then((r) => r.json());
   },
 
   consultar(id) {
-    // const foundUser = users.find((user) => +user.id === +id);
-
-    // return Promise.resolve(foundUser).then((r) => r);
-    return fetch(`${baseUrl}/usuarios/` + id).then((r) => r.json());
+    return fetch(`${baseUrl}/usuarios/` + id, { headers: header() }).then((r) =>
+      r.json()
+    );
   },
 
   listar() {
-    // return Promise.resolve(users).then((r) => r);
-    return fetch(`${baseUrl}/usuarios/`).then((r) => r.json());
+    return fetch(`${baseUrl}/usuarios`, { headers: header() }).then((r) =>
+      r.json()
+    );
   },
 
   excluir(usuario) {
-    // users = users.filter((user) => +user.id !== +usuario.id);
-
-    // return Promise.resolve(users).then((r) => r);
     return fetch(`${baseUrl}/usuarios/` + usuario.id, {
       method: "DELETE",
+      headers: header(true),
     }).then((r) => r.json());
   },
 };

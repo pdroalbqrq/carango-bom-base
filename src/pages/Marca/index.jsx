@@ -48,6 +48,7 @@ function Marca() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="delete-btn"
           className={classes.actions}
           variant="contained"
           color="secondary"
@@ -57,6 +58,7 @@ function Marca() {
           Excluir
         </Button>
         <Button
+          data-testid="edit-btn"
           className={classes.actions}
           variant="contained"
           color="primary"
@@ -66,6 +68,7 @@ function Marca() {
           Alterar
         </Button>
         <Button
+          data-testid="insert-btn"
           className={classes.actions}
           variant="contained"
           color="primary"

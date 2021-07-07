@@ -35,8 +35,8 @@ function Routes() {
       <Route exact path="/cadastro" component={Cadastro} />
       {/* Usuarios */}
       <Route exact path="/usuarios" component={Usuario} />
-      <Route exact path="/usuario/cadastro" component={UsuarioRegister} />
-      <Route exact path="/usuario/edicao/:id" component={UsuarioRegister} />
+      <Route exact path="/usuarios/cadastro" component={UsuarioRegister} />
+      <Route exact path="/usuarios/edicao/:id" component={UsuarioRegister} />
       {/* DashBoard */}
       <Route exact path="/dashboard" component={Dashboard} />
     </Switch>

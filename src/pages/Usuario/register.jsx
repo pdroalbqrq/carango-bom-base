@@ -42,7 +42,6 @@ function UsuarioRegister() {
     if (id) {
       let isSubscribed = true;
       UsuarioService.consultar(id).then((value) => {
-        console.log(value);
         if (isSubscribed) {
           setUsuario({ ...usuario, ...value });
         }

@@ -67,7 +67,16 @@ function UseErros(getForm, setForm) {
     };
   };
 
-  return { handleUserInput, formatValid, handleTouch, getError };
+  const formValue = () => {
+    const newForm = { ...getForm };
+
+    delete newForm.formValid;
+    delete newForm.formErrors;
+
+    return newForm;
+  };
+
+  return { handleUserInput, formatValid, handleTouch, getError, formValue };
 }
 
 export default UseErros;

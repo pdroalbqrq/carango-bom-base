@@ -1,10 +1,11 @@
 import baseUrl from "../config/environment";
-
+import { header } from "../utils/http-header";
 const MarcaService = {
   cadastrar(marca) {
-    return fetch(`${baseUrl}/marcas/`, {
+    return fetch(`${baseUrl}/marcas`, {
       method: "POST",
       body: JSON.stringify(marca),
+      headers: header(),
     }).then((r) => r.json());
   },
 
@@ -12,21 +13,28 @@ const MarcaService = {
     return fetch(`${baseUrl}/marcas/` + marca.id, {
       method: "PUT",
       body: JSON.stringify(marca),
+      headers: header(),
     }).then((r) => r.json());
   },
 
   consultar(id) {
-    return fetch(`${baseUrl}/marcas/` + id).then((r) => r.json());
+    return fetch(`${baseUrl}/marcas/` + id, {
+      headers: header(),
+    }).then((r) => r.json());
   },
 
   listar() {
-    return fetch(`${baseUrl}/marcas/`).then((r) => r.json());
+    return fetch(`${baseUrl}/marcas`, {
+      headers: header(),
+    }).then((r) => r.json());
   },
 
   excluir(marca) {
+    console.log(marca);
     return fetch(`${baseUrl}/marcas/` + marca.id, {
       method: "DELETE",
-    }).then((r) => r.json());
+      headers: header(true),
+    }).then((r) => r);
   },
 };
 
