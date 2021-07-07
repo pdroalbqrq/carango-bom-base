@@ -18,11 +18,11 @@ import UsuarioRegister from "../pages/Usuario/register";
 
 import Dashboard from "../pages/DashBoard";
 
-function Routes() {
+function Routes({ setAuth }) {
   return (
     <Switch>
       {/* Login */}
-      <Route exact path="/login" component={Login} />
+      <Route exact path="/login" render={() => <Login setAuth={setAuth} />} />
       {/* Cadastro */}
       <Route exact path="/cadastro" component={Cadastro} />
       {/* Veículos */}

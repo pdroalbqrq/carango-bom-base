@@ -10,7 +10,7 @@ import ItensMenu from "../ItensMenu";
 // Style
 import { useStyles } from "./styles";
 
-function DrawerMenu() {
+function DrawerMenu({ auth }) {
   const classes = useStyles();
 
   const [isShowingDrawer, setIsShowingDrawer] = useState(false);
@@ -22,7 +22,7 @@ function DrawerMenu() {
           open={isShowingDrawer}
           onClose={() => setIsShowingDrawer(false)}
         >
-          <ItensMenu setIsShowingDrawer={setIsShowingDrawer} />
+          <ItensMenu setIsShowingDrawer={setIsShowingDrawer} auth={auth} />
         </Drawer>
       ) : null}
 

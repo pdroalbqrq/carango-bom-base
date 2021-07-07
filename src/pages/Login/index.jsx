@@ -7,7 +7,7 @@ import useErros from "../../hooks/useErros";
 
 import UsuarioService from "../../services/UsuarioService";
 
-function Login() {
+function Login({ setAuth }) {
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -38,7 +38,7 @@ function Login() {
         event.preventDefault();
         if (loginForm.formValid) {
           UsuarioService.autenticar(formValue()).then((res) => {
-            console.log(res);
+            setAuth(true);
             history.push("/");
           });
         }

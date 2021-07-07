@@ -9,12 +9,12 @@ import ItensMenu from "../ItensMenu";
 // Style
 import { useStyles } from "./styles";
 
-function SideMenu() {
+function SideMenu({ auth }) {
   const classes = useStyles();
 
   return (
     <Container disableGutters className={classes.main}>
-      <ItensMenu />
+      <ItensMenu auth={auth} />
     </Container>
   );
 }

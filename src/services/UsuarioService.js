@@ -47,7 +47,7 @@ const UsuarioService = {
     return fetch(`${baseUrl}/usuarios/` + usuario.id, {
       method: "DELETE",
       headers: header(true),
-    }).then((r) => r.json());
+    }).then((r) => r);
   },
 };
 

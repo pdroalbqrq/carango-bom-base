@@ -8,7 +8,7 @@ import UsuarioService from "../../services/UsuarioService";
 // Style
 import { useStyles } from "./styles";
 
-const colunas = [{ field: "nome", headerName: "Nome", flex: 1 }];
+const colunas = [{ field: "username", headerName: "Nome", flex: 1 }];
 
 function Usuario() {
   const [usuarios, setUsuarios] = useState([]);
