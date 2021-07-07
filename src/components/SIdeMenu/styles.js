@@ -6,9 +6,6 @@ const useStyles = makeStyles(() => ({
     border: "1px solid rgba(224, 224, 224, 1)",
     borderRadius: 4,
   },
-  listContainer: {
-    padding: 0,
-  },
 }));
 
 export { useStyles };

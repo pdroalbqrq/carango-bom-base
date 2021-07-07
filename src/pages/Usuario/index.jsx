@@ -71,7 +71,7 @@ function Usuario() {
           color="primary"
           onClick={() => history.push("/usuarios/cadastro")}
         >
-          Inserir
+          Incluir
         </Button>
       </div>
     </div>

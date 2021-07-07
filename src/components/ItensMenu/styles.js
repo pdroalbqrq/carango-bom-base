@@ -7,6 +7,7 @@ const useStyles = makeStyles(() => ({
   listContainer: {
     width: DRAWER_WIDTH,
     borderRadius: 4,
+    padding: 0,
   },
 }));
 
