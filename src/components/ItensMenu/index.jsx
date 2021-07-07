@@ -33,10 +33,6 @@ function ItensMenu({ setIsShowingDrawer, auth }) {
   }
   return (
     <List className={classes.listContainer}>
-      <ListItem button onClick={() => handlePageNavigation("/login")}>
-        <ListItemText primary={"Entrar"} />
-      </ListItem>
-      <Divider />
       <ListItem button onClick={() => handlePageNavigation("/")}>
         <ListItemText primary={"Veículos"} />
       </ListItem>
