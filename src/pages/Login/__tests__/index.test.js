@@ -38,7 +38,7 @@ describe("Login Component Test", () => {
         <Route
           exact
           path="/login"
-          render={() => <Login setAuth={(auth) => {}} />}
+          render={() => <Login setAuth={(auth) => auth} />}
         />
       </Router>
     );
