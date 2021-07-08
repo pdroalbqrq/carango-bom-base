@@ -6,6 +6,9 @@ import { Router, Route } from "react-router-dom";
 // Components
 import Cadastro from "../index";
 
+// Mock
+import mockService from "../../../utils/__mocks__/serviceMock";
+
 describe("Cadastro Component Test", () => {
   let userValue;
   let passValue;
@@ -26,11 +29,22 @@ describe("Cadastro Component Test", () => {
     return testString;
   };
 
+  const fillForm = async () => {
+    await waitFor(() => {
+      fireEvent.change(usernameInput, { target: { value: userValue } });
+      fireEvent.change(senhaInput, { target: { value: passValue } });
+      fireEvent.change(confirmarSenhaInput, {
+        target: { value: confirmPassValue },
+      });
+    });
+  };
+
   beforeAll(() => {
     history.push("/cadastro");
   });
 
   beforeEach(() => {
+    mockService({ response: "ok" });
     render(
       <Router history={history}>
         <Route exact path="/cadastro" component={Cadastro} />
@@ -100,13 +114,7 @@ describe("Cadastro Component Test", () => {
     passValue = genValues(10);
     confirmPassValue = genValues(10);
 
-    await waitFor(() => {
-      fireEvent.change(usernameInput, { target: { value: userValue } });
-      fireEvent.change(senhaInput, { target: { value: passValue } });
-      fireEvent.change(confirmarSenhaInput, {
-        target: { value: confirmPassValue },
-      });
-    });
+    await fillForm();
 
     expect(submitButton).toBeEnabled();
   });
@@ -115,36 +123,20 @@ describe("Cadastro Component Test", () => {
     userValue = genValues(6);
     passValue = genValues(10);
 
-    await waitFor(() => {
-      fireEvent.change(usernameInput, { target: { value: userValue } });
-      fireEvent.change(senhaInput, { target: { value: passValue } });
-      fireEvent.change(confirmarSenhaInput, {
-        target: { value: confirmPassValue },
-      });
-    });
+    await fillForm();
 
     fireEvent.click(submitButton);
 
-    expect(history.length).toBe(3);
-    expect(history.location.pathname).toBe("/login");
+    await waitFor(() => {
+      expect(history.length).toBe(3);
+      expect(history.location.pathname).toBe("/login");
+    });
 
     history.push("/cadastro");
   });
 
   test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
-    userValue = genValues(6);
-    passValue = genValues(10);
-    confirmPassValue = genValues(10);
-
     const registerButton = screen.getByTestId("login-btn");
-
-    await waitFor(() => {
-      fireEvent.change(usernameInput, { target: { value: userValue } });
-      fireEvent.change(senhaInput, { target: { value: passValue } });
-      fireEvent.change(confirmarSenhaInput, {
-        target: { value: confirmPassValue },
-      });
-    });
 
     fireEvent.click(registerButton);
 

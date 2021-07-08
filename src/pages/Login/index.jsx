@@ -88,12 +88,12 @@ function Login({ setAuth }) {
         />
 
         <Button
+          data-testid="submit-btn"
           style={{ margin: 10 }}
           variant="contained"
           disabled={!loginForm.formValid}
           color="primary"
           type="submit"
-          data-testid="submit-btn"
         >
           Entrar
         </Button>

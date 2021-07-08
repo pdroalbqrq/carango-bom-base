@@ -1,14 +1,11 @@
 // Lib
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { Router, Route } from "react-router-dom";
-import { act } from "react-dom/test-utils";
-
+import { Route, Router } from "react-router-dom";
+// Mock
+import mockService from "../../../utils/__mocks__/serviceMock";
 // Components
 import Cadastro from "../register";
-
-// Mock
-import mockService from "../../../utils/__mocks__/ServiceMock";
 
 const data = [
   {
@@ -47,16 +44,15 @@ describe("Usuario Component Test", () => {
 
   beforeEach(async () => {
     mockService(data);
-    await act(async () => {
-      await render(
-        <Router history={history}>
-          <Route exact path="/usuario/edicao/:id" component={Cadastro} />
-        </Router>
-      );
-    });
 
-    submitButton = screen.getByTestId("submit-btn");
-    nameInput = screen.getByTestId("name-input");
+    render(
+      <Router history={history}>
+        <Route exact path="/usuario/edicao/:id" component={Cadastro} />
+      </Router>
+    );
+
+    submitButton = await screen.findByTestId("submit-btn");
+    nameInput = await screen.findByTestId("name-input");
   });
 
   test("deve iniciar o formulario inválido com todos os campos vazios", () => {
@@ -118,7 +114,7 @@ describe("Usuario Component Test", () => {
   });
 
   test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
-    const registerButton = screen.getByTestId("cancel-btn");
+    const registerButton = await screen.findByTestId("cancel-btn");
 
     fireEvent.click(registerButton);
 

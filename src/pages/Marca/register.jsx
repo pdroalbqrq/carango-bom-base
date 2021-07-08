@@ -91,6 +91,7 @@ function MarcaRegister() {
           variant="contained"
           color="secondary"
           className={classes.actions}
+          onClick={() => confirmar()}
         >
           Cancelar
         </Button>
