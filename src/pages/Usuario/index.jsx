@@ -17,30 +17,16 @@ function Usuario() {
   const history = useHistory();
 
   function excluir() {
-    UsuarioService.excluir(usuarioSelecionado)
-      .then(() => {
-        setUsuarioSelecionado(null);
-        carregarUsuarios();
-      })
-      .catch(() => {
-        handleError();
-      });
-  }
-
-  function handleError() {
-    setUsuarios([]);
-    history.push("/");
-    window.location.reload();
+    UsuarioService.excluir(usuarioSelecionado).then(() => {
+      setUsuarioSelecionado(null);
+      carregarUsuarios();
+    });
   }
 
   useEffect(() => carregarUsuarios(), []);
 
   function carregarUsuarios() {
-    UsuarioService.listar()
-      .then((dados) => setUsuarios(dados))
-      .catch(() => {
-        handleError();
-      });
+    UsuarioService.listar().then(setUsuarios);
   }
 
   return (

@@ -84,7 +84,7 @@ function Cadastro() {
           onChange={(event) => handleUserInput(event, validacoesSenha)}
           error={getError("senha")}
           helperText={usuarioForm.formErrors.senha.text}
-          type="text"
+          type="password"
           variant="outlined"
           fullWidth
           required
@@ -95,7 +95,7 @@ function Cadastro() {
           name="confirmarSenha"
           id="repetirSenha"
           label="Repetir senha"
-          type="text"
+          type="password"
           onFocus={(event) => handleTouch(event)}
           onChange={(event) => handleUserInput(event, validacoesSenha)}
           error={getError("confirmarSenha")}

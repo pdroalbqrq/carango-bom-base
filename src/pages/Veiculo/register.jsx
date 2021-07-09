@@ -106,13 +106,13 @@ function VeiculoRegister() {
           id="marcaId"
           name="marcaId"
           value={veiculo.marcaId}
-          onChange={(evt) =>
-            setVeiculo({ ...veiculo, marcaId: evt.target.value })
-          }
+          onChange={(evt) => {
+            setVeiculo({ ...veiculo, marcaId: evt.target.value });
+            handleUserInput(evt, validacoesMarca);
+          }}
           label="Marca"
           margin="none"
           onFocus={(event) => handleTouch(event)}
-          onChange={(event) => handleUserInput(event, validacoesMarca)}
           error={getError("marcaId")}
         >
           <MenuItem key="000" value="">

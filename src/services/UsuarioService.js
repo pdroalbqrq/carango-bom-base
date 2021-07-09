@@ -28,7 +28,7 @@ const UsuarioService = {
       method: "PUT",
       body: JSON.stringify(usuario),
       headers: header(),
-    }).then((r) => r.json());
+    }).then((r) => handleResponse(r, false));
   },
 
   listar() {

@@ -41,6 +41,14 @@ function ItensMenu({ setIsShowingDrawer, auth }) {
   return (
     <List className={classes.listContainer}>
       <ListItem
+        data-testid="perfil-btn"
+        button
+        onClick={() => handlePageNavigation("/usuarios/edicao")}
+      >
+        <ListItemText primary={"Perfil"} />
+      </ListItem>
+      <Divider />
+      <ListItem
         data-testid="veiculos-btn"
         button
         onClick={() => handlePageNavigation("/")}

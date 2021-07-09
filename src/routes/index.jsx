@@ -16,7 +16,9 @@ import VeiculoRegister from "../pages/Veiculo/register";
 import Usuario from "../pages/Usuario";
 import UsuarioRegister from "../pages/Usuario/register";
 
-import Dashboard from "../pages/Dashboard";
+import Perfil from "../pages/Perfil";
+
+import DashBoard from "../pages/DashBoard";
 
 function Routes({ setAuth }) {
   return (
@@ -36,9 +38,9 @@ function Routes({ setAuth }) {
       {/* Usuarios */}
       <Route exact path="/usuarios" component={Usuario} />
       <Route exact path="/usuarios/cadastro" component={UsuarioRegister} />
-      <Route exact path="/usuarios/edicao/:id" component={UsuarioRegister} />
+      <Route exact path="/usuarios/edicao" component={Perfil} />
       {/* DashBoard */}
-      <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/dashboard" component={DashBoard} />
     </Switch>
   );
 }

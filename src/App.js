@@ -29,7 +29,7 @@ function App() {
     if (localStorage.getItem("jwt")) {
       setIsAuth(true);
     }
-  });
+  }, []);
 
   return (
     <ThemeProvider theme={muiTheme}>

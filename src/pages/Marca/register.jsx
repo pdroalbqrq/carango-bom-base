@@ -47,7 +47,7 @@ function MarcaRegister() {
 
       return () => (isSubscribed = false);
     }
-  }, [id]);
+  }, [id, marca]);
 
   return (
     <form

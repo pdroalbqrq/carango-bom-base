@@ -1,5 +1,3 @@
-import { isNumber } from "@material-ui/data-grid";
-
 const validations = {
   tamanhoMinimo: (dado, campo, tamanho) => {
     const errorObject = {

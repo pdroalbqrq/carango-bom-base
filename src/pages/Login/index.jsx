@@ -7,7 +7,7 @@ import useErros from "../../hooks/useErros";
 
 import UsuarioService from "../../services/UsuarioService";
 
-function Login({ setAuth }) {
+function Login({ setAuth, openPopup }) {
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -39,6 +39,7 @@ function Login({ setAuth }) {
         if (loginForm.formValid) {
           UsuarioService.autenticar(formValue()).then((res) => {
             setAuth(true);
+            localStorage.setItem("usuario", loginForm.username);
             history.push("/");
           });
         }
@@ -80,7 +81,7 @@ function Login({ setAuth }) {
           onChange={(event) => handleUserInput(event, validacoesSenha)}
           helperText={loginForm.formErrors.password.text}
           error={getError("password")}
-          type="text"
+          type="password"
           variant="outlined"
           fullWidth
           required
