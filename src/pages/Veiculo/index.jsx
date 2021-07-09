@@ -62,6 +62,7 @@ function Veiculo() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="delete-btn"
           className={classes.actions}
           variant="contained"
           color="secondary"
@@ -70,16 +71,9 @@ function Veiculo() {
         >
           Excluir
         </Button>
-        {/* <Button
-          className={classes.actions}
-          variant="contained"
-          color="primary"
-          disabled={!veiculoSelecionado}
-          onClick={() => alterar()}
-        >
-          Alterar
-        </Button> */}
+
         <Button
+          data-testid="insert-btn"
           className={classes.actions}
           variant="contained"
           color="primary"

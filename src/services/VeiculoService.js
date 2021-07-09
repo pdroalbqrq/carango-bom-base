@@ -37,6 +37,12 @@ const VeiculoService = {
       headers: header(true),
     }).then((r) => handleResponse(r, false));
   },
+
+  excluir(veiculo) {
+    return fetch(`${baseUrl}/veiculos/` + veiculo.id, {
+      method: "DELETE",
+    }).then((r) => r.json());
+  },
 };
 
 export default VeiculoService;

@@ -46,9 +46,9 @@ function VeiculoRegister() {
   const validacoesMarca = [formatValid("obrigatorio", ["Marca"])];
   const validacoesModelo = [formatValid("tamanhoMaximo", ["Modelo", 50])];
 
-  const validacoesAno = [];
+  const validacoesAno = [formatValid("obrigatorio", ["Ano"])];
 
-  const validacoesValor = [];
+  const validacoesValor = [formatValid("obrigatorio", ["Valor"])];
 
   function cancelar() {
     history.goBack();
@@ -119,7 +119,7 @@ function VeiculoRegister() {
       </FormControl>
 
       <TextField
-        value={veiculo.modelo}
+        value={veiculo.modelo || ""}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesModelo)}
         error={getError("modelo")}
@@ -171,6 +171,7 @@ function VeiculoRegister() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="cancel-btn"
           variant="contained"
           color="secondary"
           onClick={cancelar}
@@ -179,6 +180,7 @@ function VeiculoRegister() {
           Cancelar
         </Button>
         <Button
+          data-testid="register-btn"
           variant="contained"
           color="primary"
           type="submit"

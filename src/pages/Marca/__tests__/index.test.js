@@ -22,6 +22,7 @@ describe("Marca Cadastro Component Test", () => {
 
   beforeAll(() => {
     history.push("/marcas");
+    jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   beforeEach(async () => {

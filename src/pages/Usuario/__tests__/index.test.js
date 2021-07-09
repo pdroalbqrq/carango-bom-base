@@ -20,6 +20,7 @@ describe("Usuario Listagem Component Test", () => {
   let deleteButton;
   beforeAll(() => {
     history.push("/usuarios");
+    jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   beforeEach(async () => {

@@ -95,17 +95,11 @@ describe("Marca Cadastro Component Test", () => {
     history.push("/marcas/cadastro");
   });
 
-  test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
-    marcaValue = genValues(6);
-
-    const cancelButton = await screen.findByTestId("cancel-btn");
-
-    await waitFor(() => {
-      fireEvent.change(marcaInput, { target: { value: marcaValue } });
-    });
+  test("ao clicar em 'CANCELAR' deve redirecionar para tela de listagem", async () => {
+    const cancelButton = screen.getByTestId("cancel-btn");
 
     fireEvent.click(cancelButton);
 
-    await waitFor(() => expect(history.location.pathname).toBe("/marcas"));
+    expect(history.location.pathname).toBe("/marcas");
   });
 });
