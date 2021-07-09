@@ -8,6 +8,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  FormHelperText,
   InputAdornment,
 } from "@material-ui/core";
 import { useHistory, useParams } from "react-router";
@@ -17,34 +18,35 @@ import useErros from "../../hooks/useErros";
 
 // Service
 import VeiculoService from "../../services/VeiculoService";
+import MarcaService from "../../services/MarcaService";
 
 // Style
 import { useStyles } from "./styles";
 
 function VeiculoRegister() {
   const [veiculo, setVeiculo] = useState({
-    marca: "",
+    marcaId: "",
     modelo: "",
     ano: "",
     valor: "",
     formErrors: {
-      modelo: { valid: true, text: "" },
-      ano: { valid: true, text: "" },
-      valor: { valid: true, text: "" },
+      modelo: { valid: false, touched: false, text: "" },
+      marcaId: { valid: false, touched: false, text: "" },
+      ano: { valid: false, touched: false, text: "" },
+      valor: { valid: false, touched: false, text: "" },
     },
-    formValid: true,
   });
+  const [marcas, setMarcas] = useState([]);
   const classes = useStyles();
-  const { handleUserInput, formatValid, handleTouch, getError } = new useErros(
-    veiculo,
-    setVeiculo
-  );
+  const { handleUserInput, formatValid, handleTouch, getError, formValue } =
+    new useErros(veiculo, setVeiculo);
   const history = useHistory();
   const { id } = useParams();
 
+  const validacoesMarca = [formatValid("obrigatorio", ["Marca"])];
   const validacoesModelo = [
-    formatValid("tamanhoMinimo", ["Marca", 3]),
-    formatValid("tamanhoMaximo", ["Marca", 50]),
+    formatValid("tamanhoMinimo", ["Modelo", 3]),
+    formatValid("tamanhoMaximo", ["Modelo", 50]),
   ];
 
   const validacoesAno = [];
@@ -56,60 +58,67 @@ function VeiculoRegister() {
   }
 
   useEffect(() => {
-    if (id) {
-      VeiculoService.consultar(id).then((value) => {
-        setVeiculo({ ...veiculo, ...value });
-      });
-    }
-  }, [id]);
+    let isSubscribed = true;
+    MarcaService.listar().then((res) => {
+      console.log("teste", res);
+      if (isSubscribed) {
+        setMarcas(res);
+      }
+    });
+
+    return () => (isSubscribed = false);
+  }, []);
+
+  function marcasMenuItem() {
+    return marcas.map((marca) => {
+      // console.log(marca);
+      return (
+        <MenuItem key={marca.id} value={marca.id}>
+          {marca.nome}
+        </MenuItem>
+      );
+    });
+  }
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-
-        // if (possoEnviar()) {
-        //   if (id) {
-        //     VeiculoService.alterar({
-        //       id,
-        //       marca: veiculo.marca,
-        //       modelo: veiculo.modelo,
-        //       ano: veiculo.ano,
-        //       valor: veiculo.valor,
-        //     }).then((res) => {
-        //       history.goBack();
-        //     });
-        //   } else {
-        //     VeiculoService.cadastrar({
-        //       marca: veiculo.marca,
-        //       modelo: veiculo.modelo,
-        //       ano: veiculo.ano,
-        //       valor: veiculo.valor,
-        //     }).then((res) => {
-        //       setVeiculo("");
-        //       history.goBack();
-        //     });
-        //   }
-        // }
+        if (veiculo.formValid) {
+          VeiculoService.cadastrar(formValue()).then((res) => {
+            setVeiculo({
+              ...veiculo,
+              marcaId: "",
+              modelo: "",
+              ano: "",
+              valor: "",
+            });
+            history.goBack();
+          });
+        }
       }}
     >
       <FormControl variant="outlined" fullWidth required>
         <InputLabel htmlFor="marca">Marca</InputLabel>
         <Select
-          id="marca"
-          name="marca"
-          value={veiculo.marca}
+          id="marcaId"
+          name="marcaId"
+          value={veiculo.marcaId}
           onChange={(evt) =>
-            setVeiculo({ ...veiculo, marca: evt.target.value })
+            setVeiculo({ ...veiculo, marcaId: evt.target.value })
           }
           label="Marca"
-          margin="normal"
+          margin="none"
+          onFocus={(event) => handleTouch(event)}
+          onChange={(event) => handleUserInput(event, validacoesMarca)}
+          error={getError("marcaId")}
         >
-          <MenuItem value="">Selecione</MenuItem>
-          <MenuItem value={0}>marca 1</MenuItem>
-          <MenuItem value={1}>marca 2</MenuItem>
-          <MenuItem value={2}>marca 3</MenuItem>
+          <MenuItem key="000" value="">
+            Selecione
+          </MenuItem>
+          {marcasMenuItem()}
         </Select>
+        <FormHelperText>{veiculo.formErrors.marcaId.text}</FormHelperText>
       </FormControl>
 
       <TextField

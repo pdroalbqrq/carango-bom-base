@@ -1,5 +1,5 @@
 import baseUrl from "../config/environment";
-import { header } from "../utils/http-header";
+import { header, handleResponse } from "../utils/http-handlers";
 
 const UsuarioService = {
   cadastrar(usuario) {
@@ -16,7 +16,7 @@ const UsuarioService = {
       body: JSON.stringify(usuario),
       headers: header(),
     })
-      .then((r) => r.json())
+      .then((r) => handleResponse(r))
       .then((r) => {
         localStorage.setItem("jwt", `${r.type} ${r.token}`);
         return r;
@@ -24,22 +24,16 @@ const UsuarioService = {
   },
 
   alterar(usuario) {
-    return fetch(`${baseUrl}/usuarios/` + usuario.id, {
+    return fetch(`${baseUrl}/usuarios`, {
       method: "PUT",
       body: JSON.stringify(usuario),
       headers: header(),
     }).then((r) => r.json());
   },
 
-  consultar(id) {
-    return fetch(`${baseUrl}/usuarios/` + id, { headers: header() }).then((r) =>
-      r.json()
-    );
-  },
-
   listar() {
     return fetch(`${baseUrl}/usuarios`, { headers: header() }).then((r) =>
-      r.json()
+      handleResponse(r)
     );
   },
 
@@ -47,7 +41,7 @@ const UsuarioService = {
     return fetch(`${baseUrl}/usuarios/` + usuario.id, {
       method: "DELETE",
       headers: header(true),
-    }).then((r) => r);
+    }).then((r) => handleResponse(r, false));
   },
 };
 

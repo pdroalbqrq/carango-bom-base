@@ -33,7 +33,13 @@ function Marca() {
   useEffect(() => carregarMarcas(), []);
 
   function carregarMarcas() {
-    MarcaService.listar().then((dados) => setMarcas(dados));
+    MarcaService.listar()
+      .then((dados) => setMarcas(dados))
+      .catch(() => {
+        setMarcas([]);
+        history.push("/");
+        window.location.reload();
+      });
   }
 
   return (

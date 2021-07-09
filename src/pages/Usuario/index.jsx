@@ -16,21 +16,31 @@ function Usuario() {
   const classes = useStyles();
   const history = useHistory();
 
-  function alterar() {
-    history.push("/usuarios/edicao/" + usuarioSelecionado.id);
+  function excluir() {
+    UsuarioService.excluir(usuarioSelecionado)
+      .then(() => {
+        setUsuarioSelecionado(null);
+        carregarUsuarios();
+      })
+      .catch(() => {
+        handleError();
+      });
   }
 
-  function excluir() {
-    UsuarioService.excluir(usuarioSelecionado).then(() => {
-      setUsuarioSelecionado(null);
-      carregarUsuarios();
-    });
+  function handleError() {
+    setUsuarios([]);
+    history.push("/");
+    window.location.reload();
   }
 
   useEffect(() => carregarUsuarios(), []);
 
   function carregarUsuarios() {
-    UsuarioService.listar().then((dados) => setUsuarios(dados));
+    UsuarioService.listar()
+      .then((dados) => setUsuarios(dados))
+      .catch(() => {
+        handleError();
+      });
   }
 
   return (
@@ -54,16 +64,7 @@ function Usuario() {
         >
           Excluir
         </Button>
-        <Button
-          data-testid="edit-btn"
-          className={classes.actions}
-          variant="contained"
-          color="primary"
-          disabled={!usuarioSelecionado}
-          onClick={() => alterar()}
-        >
-          Alterar
-        </Button>
+
         <Button
           data-testid="insert-btn"
           className={classes.actions}

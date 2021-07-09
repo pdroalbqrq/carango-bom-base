@@ -29,20 +29,24 @@ function Veiculo() {
   const classes = useStyles();
   const history = useHistory();
 
-  function alterar() {
-    history.push("/veiculos/edicao/" + veiculoSelecionado.id);
+  function handleError() {
+    setVeiculos([]);
+    history.push("/");
+    window.location.reload();
   }
 
   function excluir() {
-    VeiculoService.excluir(veiculoSelecionado).then(() => {
-      setVeiculoSelecionado(null);
-      carregarMarcas();
-    });
+    VeiculoService.excluir(veiculoSelecionado)
+      .then(() => {
+        setVeiculoSelecionado(null);
+        carregarVeiculos();
+      })
+      .catch(() => handleError());
   }
 
-  useEffect(() => carregarMarcas(), []);
+  useEffect(() => carregarVeiculos(), []);
 
-  function carregarMarcas() {
+  function carregarVeiculos() {
     VeiculoService.listar().then((dados) => setVeiculos(dados));
   }
 
@@ -66,7 +70,7 @@ function Veiculo() {
         >
           Excluir
         </Button>
-        <Button
+        {/* <Button
           className={classes.actions}
           variant="contained"
           color="primary"
@@ -74,7 +78,7 @@ function Veiculo() {
           onClick={() => alterar()}
         >
           Alterar
-        </Button>
+        </Button> */}
         <Button
           className={classes.actions}
           variant="contained"
