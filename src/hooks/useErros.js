@@ -12,9 +12,7 @@ function UseErros(getForm, setForm) {
   };
 
   const handleTouch = (e) => {
-    console.log(e);
     const { name, id } = e.target;
-    // console.log(name);
     const contidion = getForm.formErrors[name] || getForm.formErrors[id];
 
     if (contidion.touched) return;

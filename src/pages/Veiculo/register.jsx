@@ -57,7 +57,6 @@ function VeiculoRegister() {
   useEffect(() => {
     let isSubscribed = true;
     MarcaService.listar().then((res) => {
-      console.log("teste", res);
       if (isSubscribed) {
         setMarcas(res);
       }
@@ -68,7 +67,6 @@ function VeiculoRegister() {
 
   function marcasMenuItem() {
     return marcas.map((marca) => {
-      // console.log(marca);
       return (
         <MenuItem key={marca.id} value={marca.id}>
           {marca.nome}

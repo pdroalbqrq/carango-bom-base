@@ -30,7 +30,6 @@ const MarcaService = {
   },
 
   excluir(marca) {
-    // console.log(marca);
     return fetch(`${baseUrl}/marcas/` + marca.id, {
       method: "DELETE",
       headers: header(true),

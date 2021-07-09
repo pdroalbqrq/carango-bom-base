@@ -41,8 +41,6 @@ function DashBoard() {
   useEffect(() => {
     let isSubscribed = true;
     VeiculoService.dashboard().then((res) => {
-      console.log(res);
-      console.log(dataDashMOCK);
       if (isSubscribed) {
         setDashboard(res);
       }
