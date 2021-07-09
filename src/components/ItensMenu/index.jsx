@@ -2,7 +2,6 @@ import React from "react";
 
 // Libs
 import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
-import React from "react";
 import { useHistory } from "react-router";
 // Style
 import { useStyles } from "./styles";
@@ -20,11 +19,19 @@ function ItensMenu({ setIsShowingDrawer, auth }) {
   if (!isAuth) {
     return (
       <List className={classes.listContainer}>
-        <ListItem button onClick={() => handlePageNavigation("/login")}>
+        <ListItem
+          data-testid="entrar-btn"
+          button
+          onClick={() => handlePageNavigation("/login")}
+        >
           <ListItemText primary={"Entrar"} />
         </ListItem>
         <Divider />
-        <ListItem button onClick={() => handlePageNavigation("/")}>
+        <ListItem
+          data-testid="veiculos-btn"
+          button
+          onClick={() => handlePageNavigation("/")}
+        >
           <ListItemText primary={"Veículos"} />
         </ListItem>
         <Divider />
@@ -33,24 +40,41 @@ function ItensMenu({ setIsShowingDrawer, auth }) {
   }
   return (
     <List className={classes.listContainer}>
-      <ListItem button onClick={() => handlePageNavigation("/")}>
+      <ListItem
+        data-testid="veiculos-btn"
+        button
+        onClick={() => handlePageNavigation("/")}
+      >
         <ListItemText primary={"Veículos"} />
       </ListItem>
       <Divider />
 
-      <ListItem button onClick={() => handlePageNavigation("/marcas")}>
+      <ListItem
+        data-testid="marcas-btn"
+        button
+        onClick={() => handlePageNavigation("/marcas")}
+      >
         <ListItemText primary={"Marcas"} />
       </ListItem>
       <Divider />
-      <ListItem button onClick={() => handlePageNavigation("/usuarios")}>
+      <ListItem
+        data-testid="usuarios-btn"
+        button
+        onClick={() => handlePageNavigation("/usuarios")}
+      >
         <ListItemText primary={"Usuários"} />
       </ListItem>
       <Divider />
-      <ListItem button onClick={() => handlePageNavigation("/dashboard")}>
+      <ListItem
+        data-testid="dashboard-btn"
+        button
+        onClick={() => handlePageNavigation("/dashboard")}
+      >
         <ListItemText primary={"Dashboard"} />
       </ListItem>
       <Divider />
       <ListItem
+        data-testid="sair-btn"
         button
         onClick={() => {
           setIsAuth(false);

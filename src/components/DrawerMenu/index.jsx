@@ -16,9 +16,10 @@ function DrawerMenu({ auth }) {
   const [isShowingDrawer, setIsShowingDrawer] = useState(false);
 
   return (
-    <AppBar className={classes.appBar}>
+    <AppBar data-testid="appBar" className={classes.appBar}>
       {isShowingDrawer ? (
         <Drawer
+          data-testid="drawer-menu"
           open={isShowingDrawer}
           onClose={() => setIsShowingDrawer(false)}
         >
@@ -28,6 +29,7 @@ function DrawerMenu({ auth }) {
 
       <Toolbar>
         <IconButton
+          data-testid="hamburguer-icon"
           onClick={() => setIsShowingDrawer(!isShowingDrawer)}
           edge="start"
           color="inherit"
