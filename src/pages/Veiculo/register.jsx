@@ -46,9 +46,15 @@ function VeiculoRegister() {
   const validacoesMarca = [formatValid("obrigatorio", ["Marca"])];
   const validacoesModelo = [formatValid("tamanhoMaximo", ["Modelo", 50])];
 
-  const validacoesAno = [formatValid("obrigatorio", ["Ano"])];
+  const validacoesAno = [
+    formatValid("obrigatorio", ["Ano"]),
+    formatValid("anoValido", []),
+  ];
 
-  const validacoesValor = [formatValid("obrigatorio", ["Valor"])];
+  const validacoesValor = [
+    formatValid("obrigatorio", ["Valor"]),
+    formatValid("precoValido", ["Valor"]),
+  ];
 
   function cancelar() {
     history.goBack();
@@ -96,6 +102,7 @@ function VeiculoRegister() {
       <FormControl variant="outlined" fullWidth required>
         <InputLabel htmlFor="marca">Marca</InputLabel>
         <Select
+          inputProps={{ "data-testid": "marca-input" }}
           id="marcaId"
           name="marcaId"
           value={veiculo.marcaId}
@@ -117,6 +124,7 @@ function VeiculoRegister() {
       </FormControl>
 
       <TextField
+        inputProps={{ "data-testid": "modelo-input" }}
         value={veiculo.modelo || ""}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesModelo)}
@@ -133,6 +141,7 @@ function VeiculoRegister() {
       />
 
       <TextField
+        inputProps={{ "data-testid": "ano-input" }}
         value={veiculo.ano}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesAno)}
@@ -149,6 +158,7 @@ function VeiculoRegister() {
       />
 
       <TextField
+        inputProps={{ "data-testid": "valor-input" }}
         value={veiculo.valor}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesValor)}

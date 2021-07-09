@@ -6,34 +6,6 @@ import { useStyles } from "./styles";
 // Service
 import VeiculoService from "../../services/VeiculoService";
 
-const dataDashMOCK = [
-  {
-    marca: "GM",
-    numVeiculos: 10,
-    somaValor: 50000,
-  },
-  {
-    marca: "FIAT",
-    numVeiculos: 3,
-    somaValor: 20000,
-  },
-  {
-    marca: "RENAULT",
-    numVeiculos: 2,
-    somaValor: 80000,
-  },
-  {
-    marca: "RENAULT",
-    numVeiculos: 2,
-    somaValor: 80000,
-  },
-  {
-    marca: "RENAULT",
-    numVeiculos: 2,
-    somaValor: 80000,
-  },
-];
-
 function DashBoard() {
   const [dashboard, setDashboard] = useState([]);
   const classes = useStyles();

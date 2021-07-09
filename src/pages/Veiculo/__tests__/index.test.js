@@ -26,7 +26,6 @@ const veiculos = [
 describe("Veiculo Listagem Component Test", () => {
   const history = createMemoryHistory();
   let deleteButton;
-  let editButton;
   let insertButton;
 
   beforeAll(() => {
@@ -47,13 +46,11 @@ describe("Veiculo Listagem Component Test", () => {
     );
 
     insertButton = screen.getByTestId("insert-btn");
-    editButton = screen.getByTestId("edit-btn");
     deleteButton = screen.getByTestId("delete-btn");
   });
 
   test("deve iniciar a tela com os botões alterar e excluir desabilitados e o botao inserir habilitado", () => {
     expect(deleteButton).toBeDisabled();
-    expect(editButton).toBeDisabled();
     expect(insertButton).toBeEnabled();
   });
 
@@ -63,13 +60,12 @@ describe("Veiculo Listagem Component Test", () => {
     expect(grid).toBeInTheDocument();
   });
 
-  test("deve habilitar os botões 'EXCLUIR' e 'ALTERAR' ao selecionar uma linha do grid", async () => {
+  test("deve habilitar o botão 'EXCLUIR' ao selecionar uma linha do grid", async () => {
     const veiculoTest = await screen.getByText("Test Car");
 
     fireEvent.click(veiculoTest);
 
     expect(deleteButton).toBeEnabled();
-    expect(editButton).toBeEnabled();
   });
 
   test("deve verificar se o número de linhas corresponde à requisição", async () => {
@@ -98,17 +94,5 @@ describe("Veiculo Listagem Component Test", () => {
     });
 
     expect(deleteButton).toBeDisabled();
-  });
-
-  test("deve ir para tela de edição ao clicar no botao 'ALTERAR'", async () => {
-    const veiculoTest = await screen.getByText("Test Car");
-
-    fireEvent.click(veiculoTest);
-
-    await waitFor(() => {
-      fireEvent.click(editButton);
-    });
-
-    expect(history.location.pathname).toBe("/veiculos/edicao/999");
   });
 });

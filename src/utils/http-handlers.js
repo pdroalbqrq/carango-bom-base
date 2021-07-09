@@ -11,7 +11,6 @@ const header = (hasBody = false) => {
 const handleResponse = (response, hasBody = true) => {
   if (response.status === 403) {
     localStorage.removeItem("jwt");
-    // window.location.reload();
     throw new Error("Não autorizado");
   }
 

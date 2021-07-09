@@ -54,15 +54,6 @@ describe("Marca Cadastro Component Test", () => {
     expect(closestDiv).toHaveClass("Mui-error");
   });
 
-  test("formulario inválido com erro de tamanho minimo", async () => {
-    marcaValue = genValues(3);
-    await waitFor(() => {
-      fireEvent.change(marcaInput, { target: { value: marcaValue } });
-    });
-
-    expect(submitButton).toBeDisabled();
-  });
-
   test("formulario inválido com erro de tamanho máximo", async () => {
     marcaValue = genValues(26);
     await waitFor(() => {
