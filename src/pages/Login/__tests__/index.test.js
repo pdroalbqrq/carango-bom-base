@@ -6,6 +6,9 @@ import { Router, Route } from "react-router-dom";
 // Components
 import Login from "../index";
 
+// Mock
+import mockService from "../../../utils/__mocks__/serviceMock";
+
 describe("Login Component Test", () => {
   let userValue;
   let passValue;
@@ -29,9 +32,14 @@ describe("Login Component Test", () => {
   });
 
   beforeEach(() => {
+    mockService({ type: "Bearer", token: "ehjyaodiJSIDjasd" });
     render(
       <Router history={history}>
-        <Route exact path="/login" component={Login} />
+        <Route
+          exact
+          path="/login"
+          render={() => <Login setAuth={(auth) => auth} />}
+        />
       </Router>
     );
 
@@ -96,16 +104,27 @@ describe("Login Component Test", () => {
     expect(submitButton).toBeEnabled();
   });
 
-  test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
+  test("deve redirecionar para history '/'", async () => {
     userValue = genValues(6);
     passValue = genValues(10);
-
-    const registerButton = screen.getByTestId("register-btn");
 
     await waitFor(() => {
       fireEvent.change(usernameInput, { target: { value: userValue } });
       fireEvent.change(senhaInput, { target: { value: passValue } });
     });
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(history.length).toBe(3);
+      expect(history.location.pathname).toBe("/");
+    });
+
+    history.push("/login");
+  });
+
+  test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
+    const registerButton = screen.getByTestId("register-btn");
 
     fireEvent.click(registerButton);
 

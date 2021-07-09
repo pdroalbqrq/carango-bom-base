@@ -1,20 +1,12 @@
 // Lib
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  mount,
-} from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { Router, Route } from "react-router-dom";
 import { act } from "react-dom/test-utils";
-
+import { Route, Router } from "react-router-dom";
+// Mock
+import mockService from "../../../utils/__mocks__/serviceMock";
 // Components
 import Usuario from "../index";
-
-// Mock
-import mockService from "../../../utils/__mocks__/ServiceMock";
 
 const usuarios = [
   { id: 1, nome: "Pedro" },
@@ -36,18 +28,17 @@ describe("Usuario Listagem Component Test", () => {
   beforeEach(async () => {
     mockService(usuarios);
 
-    await act(
-      async () =>
-        await render(
-          <Router history={history}>
-            <Route exact path="/usuarios" component={Usuario} />
-          </Router>
-        )
+    act(() =>
+      render(
+        <Router history={history}>
+          <Route exact path="/usuarios" component={Usuario} />
+        </Router>
+      )
     );
 
-    insertButton = screen.getByTestId("insert-btn");
-    editButton = screen.getByTestId("edit-btn");
-    deleteButton = screen.getByTestId("delete-btn");
+    insertButton = await screen.findByTestId("insert-btn");
+    editButton = await screen.findByTestId("edit-btn");
+    deleteButton = await screen.findByTestId("delete-btn");
   });
 
   test("deve iniciar a tela com os botões alterar e excluir desabilitados e o botao inserir habilitado", () => {

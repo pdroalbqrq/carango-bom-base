@@ -1,9 +1,9 @@
 import React from "react";
 
 // Libs
-import { List, ListItem, ListItemText, Divider } from "@material-ui/core";
+import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
+import React from "react";
 import { useHistory } from "react-router";
-
 // Style
 import { useStyles } from "./styles";
 

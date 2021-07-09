@@ -40,13 +40,11 @@ function Cadastro() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        // console.log(usuarioForm);
         if (usuarioForm.formValid) {
           UsuarioService.cadastrar({
             username: usuarioForm.username,
             password: usuarioForm.senha,
           }).then((res) => {
-            // console.log(res);
             history.push("/login");
           });
         }

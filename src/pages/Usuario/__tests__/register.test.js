@@ -1,6 +1,5 @@
 // Lib
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router, Route } from "react-router-dom";
 
@@ -8,7 +7,7 @@ import { Router, Route } from "react-router-dom";
 import Cadastro from "../register";
 
 // Mock
-import mockService from "../../../utils/__mocks__/ServiceMock";
+import mockService from "../../../utils/__mocks__/serviceMock";
 
 const data = [
   {
@@ -47,15 +46,15 @@ describe("Login Component Test", () => {
 
   beforeEach(async () => {
     mockService(data);
-    await act(async () => {
-      await render(
-        <Router history={history}>
-          <Route exact path="/usuario/cadastro" component={Cadastro} />
-        </Router>
-      );
-    });
-    submitButton = screen.getByTestId("submit-btn");
-    nameInput = screen.getByTestId("name-input");
+
+    render(
+      <Router history={history}>
+        <Route exact path="/usuario/cadastro" component={Cadastro} />
+      </Router>
+    );
+
+    submitButton = await screen.findByTestId("submit-btn");
+    nameInput = await screen.findByTestId("name-input");
   });
 
   test("deve iniciar o formulario inválido com todos os campos vazios", () => {
@@ -105,17 +104,19 @@ describe("Login Component Test", () => {
     await waitFor(() => {
       fireEvent.change(nameInput, { target: { value: nameValue } });
     });
+
     fireEvent.click(submitButton);
-    expect(submitButton).toBeEnabled();
-    // expect(history.length).toBe(3);
+
     await waitFor(() => expect(history.location.pathname).toBe("/usuarios"));
 
     history.push("/usuario/cadastro");
   });
 
   test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
-    const registerButton = screen.getByTestId("cancel-btn");
+    const registerButton = await screen.findByTestId("cancel-btn");
+
     fireEvent.click(registerButton);
+
     expect(history.location.pathname).toBe("/usuarios");
   });
 });

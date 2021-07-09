@@ -26,9 +26,9 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    // if (localStorage.getItem("jwt")) {
-    //   setIsAuth(true);
-    // }
+    if (localStorage.getItem("jwt")) {
+      setIsAuth(true);
+    }
   });
 
   return (
