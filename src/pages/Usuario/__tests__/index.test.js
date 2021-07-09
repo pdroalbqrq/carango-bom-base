@@ -28,12 +28,10 @@ describe("Usuario Listagem Component Test", () => {
   beforeEach(async () => {
     mockService(usuarios);
 
-    act(() =>
-      render(
-        <Router history={history}>
-          <Route exact path="/usuarios" component={Usuario} />
-        </Router>
-      )
+    render(
+      <Router history={history}>
+        <Route exact path="/usuarios" component={Usuario} />
+      </Router>
     );
 
     insertButton = await screen.findByTestId("insert-btn");

@@ -13,7 +13,11 @@ function SideMenu({ auth }) {
   const classes = useStyles();
 
   return (
-    <Container disableGutters className={classes.main}>
+    <Container
+      disableGutters
+      className={classes.main}
+      data-testid="sideMenu-container"
+    >
       <ItensMenu auth={auth} />
     </Container>
   );
