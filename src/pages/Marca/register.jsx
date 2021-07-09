@@ -28,7 +28,6 @@ function MarcaRegister() {
   const { id } = useParams();
 
   const validacoesMarca = [
-    formatValid("tamanhoMinimo", ["Marca", 3]),
     formatValid("tamanhoMaximo", ["Marca", 25]),
     formatValid("obrigatorio", ["Marca"]),
   ];

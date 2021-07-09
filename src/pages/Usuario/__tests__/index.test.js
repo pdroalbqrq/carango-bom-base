@@ -18,8 +18,6 @@ describe("Usuario Listagem Component Test", () => {
   const history = createMemoryHistory();
   let insertButton;
   let deleteButton;
-  let editButton;
-
   beforeAll(() => {
     history.push("/usuarios");
   });
@@ -27,21 +25,17 @@ describe("Usuario Listagem Component Test", () => {
   beforeEach(async () => {
     mockService(usuarios);
 
-    act(() =>
-      render(
-        <Router history={history}>
-          <Route exact path="/usuarios" component={Usuario} />
-        </Router>
-      )
+    render(
+      <Router history={history}>
+        <Route exact path="/usuarios" component={Usuario} />
+      </Router>
     );
 
     insertButton = await screen.findByTestId("insert-btn");
-    editButton = await screen.findByTestId("edit-btn");
     deleteButton = await screen.findByTestId("delete-btn");
   });
 
   test("deve iniciar a tela com os botões alterar e excluir desabilitados e o botao inserir habilitado", () => {
-    expect(editButton).toBeDisabled();
     expect(deleteButton).toBeDisabled();
     expect(insertButton).toBeEnabled();
   });

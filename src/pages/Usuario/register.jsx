@@ -38,42 +38,21 @@ function UsuarioRegister() {
     history.push("/usuarios");
   }
 
-  useEffect(() => {
-    if (id) {
-      let isSubscribed = true;
-      UsuarioService.consultar(id).then((value) => {
-        if (isSubscribed) {
-          setUsuario({ ...usuario, ...value });
-        }
-      });
-      return () => (isSubscribed = false);
-    }
-  }, [id]);
-
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
         const { nome } = usuario;
         if (usuario.formValid) {
-          if (id) {
-            UsuarioService.alterar({
-              id,
-              nome,
-            }).then((res) => {
-              confirm();
+          UsuarioService.cadastrar({
+            nome,
+          }).then((res) => {
+            setUsuario({
+              ...usuario,
+              nome: "",
             });
-          } else {
-            UsuarioService.cadastrar({
-              nome,
-            }).then((res) => {
-              setUsuario({
-                ...usuario,
-                nome: "",
-              });
-              confirm();
-            });
-          }
+            confirm();
+          });
         }
       }}
     >

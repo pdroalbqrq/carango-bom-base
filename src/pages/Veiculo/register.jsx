@@ -44,10 +44,7 @@ function VeiculoRegister() {
   const { id } = useParams();
 
   const validacoesMarca = [formatValid("obrigatorio", ["Marca"])];
-  const validacoesModelo = [
-    formatValid("tamanhoMinimo", ["Modelo", 3]),
-    formatValid("tamanhoMaximo", ["Modelo", 50]),
-  ];
+  const validacoesModelo = [formatValid("tamanhoMaximo", ["Modelo", 50])];
 
   const validacoesAno = [];
 
