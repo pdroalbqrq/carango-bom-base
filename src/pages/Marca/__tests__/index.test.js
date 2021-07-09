@@ -31,6 +31,7 @@ describe("Marca Cadastro Component Test", () => {
 
   beforeAll(() => {
     history.push("/marcas");
+    jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   beforeEach(async () => {
@@ -73,7 +74,7 @@ describe("Marca Cadastro Component Test", () => {
 
     const rows = container.querySelectorAll(".MuiDataGrid-row");
 
-    console.log(rows);
+    // console.log(rows);
   });
 
   test("deve verificar se mudou o history.local ao clicar no botao 'alterar'", async () => {

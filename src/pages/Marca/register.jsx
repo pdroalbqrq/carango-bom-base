@@ -33,7 +33,7 @@ function MarcaRegister() {
     formatValid("obrigatorio", ["Marca"]),
   ];
 
-  function confirmar() {
+  function cancelar() {
     history.push("/marcas");
   }
 
@@ -57,12 +57,12 @@ function MarcaRegister() {
         if (marca.formValid) {
           if (id) {
             MarcaService.alterar({ id, ...formValue() }).then((res) => {
-              confirmar();
+              cancelar();
             });
           } else {
             MarcaService.cadastrar(formValue()).then((res) => {
               setMarca({ ...marca, marca: "" });
-              confirmar();
+              cancelar();
             });
           }
         }
@@ -91,6 +91,7 @@ function MarcaRegister() {
           variant="contained"
           color="secondary"
           className={classes.actions}
+          onClick={cancelar}
         >
           Cancelar
         </Button>

@@ -96,23 +96,6 @@ describe("Login Component Test", () => {
     expect(submitButton).toBeEnabled();
   });
 
-  test("deve redirecionar para history '/'", async () => {
-    userValue = genValues(6);
-    passValue = genValues(10);
-
-    await waitFor(() => {
-      fireEvent.change(usernameInput, { target: { value: userValue } });
-      fireEvent.change(senhaInput, { target: { value: passValue } });
-    });
-
-    fireEvent.click(submitButton);
-
-    expect(history.length).toBe(3);
-    expect(history.location.pathname).toBe("/");
-
-    history.push("/login");
-  });
-
   test("ao clicar em 'Não possui conta' deve redirecionar para tela de cadastro", async () => {
     userValue = genValues(6);
     passValue = genValues(10);

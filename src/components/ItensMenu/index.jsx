@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 // Libs
 import { List, ListItem, ListItemText, Divider } from "@material-ui/core";

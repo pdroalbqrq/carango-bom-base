@@ -35,21 +35,20 @@ function VeiculoRegister() {
     formValid: true,
   });
   const classes = useStyles();
-  const { handleUserInput, formatValid, handleTouch, getError } = new useErros(
-    veiculo,
-    setVeiculo
-  );
+  const { handleUserInput, formatValid, getError, handleTouch, formValue } =
+    new useErros(veiculo, setVeiculo);
   const history = useHistory();
   const { id } = useParams();
 
   const validacoesModelo = [
-    formatValid("tamanhoMinimo", ["Marca", 3]),
-    formatValid("tamanhoMaximo", ["Marca", 50]),
+    formatValid("tamanhoMinimo", ["Modelo", 2]),
+    formatValid("tamanhoMaximo", ["Modelo", 100]),
+    formatValid("obrigatorio", ["Modelo"]),
   ];
 
-  const validacoesAno = [];
+  const validacoesAno = [formatValid("obrigatorio", ["Ano"])];
 
-  const validacoesValor = [];
+  const validacoesValor = [formatValid("obrigatorio", ["Valor"])];
 
   function cancelar() {
     history.goBack();
@@ -67,30 +66,6 @@ function VeiculoRegister() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
-
-        // if (possoEnviar()) {
-        //   if (id) {
-        //     VeiculoService.alterar({
-        //       id,
-        //       marca: veiculo.marca,
-        //       modelo: veiculo.modelo,
-        //       ano: veiculo.ano,
-        //       valor: veiculo.valor,
-        //     }).then((res) => {
-        //       history.goBack();
-        //     });
-        //   } else {
-        //     VeiculoService.cadastrar({
-        //       marca: veiculo.marca,
-        //       modelo: veiculo.modelo,
-        //       ano: veiculo.ano,
-        //       valor: veiculo.valor,
-        //     }).then((res) => {
-        //       setVeiculo("");
-        //       history.goBack();
-        //     });
-        //   }
-        // }
       }}
     >
       <FormControl variant="outlined" fullWidth required>
@@ -103,7 +78,7 @@ function VeiculoRegister() {
             setVeiculo({ ...veiculo, marca: evt.target.value })
           }
           label="Marca"
-          margin="normal"
+          margin="none"
         >
           <MenuItem value="">Selecione</MenuItem>
           <MenuItem value={0}>marca 1</MenuItem>
@@ -113,7 +88,7 @@ function VeiculoRegister() {
       </FormControl>
 
       <TextField
-        value={veiculo.modelo}
+        value={veiculo.modelo || ""}
         onFocus={(event) => handleTouch(event)}
         onChange={(event) => handleUserInput(event, validacoesModelo)}
         error={getError("modelo")}
@@ -165,6 +140,7 @@ function VeiculoRegister() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="cancel-btn"
           variant="contained"
           color="secondary"
           onClick={cancelar}
@@ -173,6 +149,7 @@ function VeiculoRegister() {
           Cancelar
         </Button>
         <Button
+          data-testid="register-btn"
           variant="contained"
           color="primary"
           type="submit"

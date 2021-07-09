@@ -36,13 +36,13 @@ function Veiculo() {
   function excluir() {
     VeiculoService.excluir(veiculoSelecionado).then(() => {
       setVeiculoSelecionado(null);
-      carregarMarcas();
+      carregarVeiculos();
     });
   }
 
-  useEffect(() => carregarMarcas(), []);
+  useEffect(() => carregarVeiculos(), []);
 
-  function carregarMarcas() {
+  function carregarVeiculos() {
     VeiculoService.listar().then((dados) => setVeiculos(dados));
   }
 
@@ -58,6 +58,7 @@ function Veiculo() {
 
       <div className={classes.actionsToolbar}>
         <Button
+          data-testid="delete-btn"
           className={classes.actions}
           variant="contained"
           color="secondary"
@@ -67,6 +68,7 @@ function Veiculo() {
           Excluir
         </Button>
         <Button
+          data-testid="edit-btn"
           className={classes.actions}
           variant="contained"
           color="primary"
@@ -76,6 +78,7 @@ function Veiculo() {
           Alterar
         </Button>
         <Button
+          data-testid="insert-btn"
           className={classes.actions}
           variant="contained"
           color="primary"

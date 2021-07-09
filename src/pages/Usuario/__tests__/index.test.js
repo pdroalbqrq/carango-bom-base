@@ -30,6 +30,7 @@ describe("Usuario Listagem Component Test", () => {
 
   beforeAll(() => {
     history.push("/usuarios");
+    jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   beforeEach(async () => {
