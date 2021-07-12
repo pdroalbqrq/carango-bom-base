@@ -8,6 +8,7 @@ import { useStyles } from "./styles";
 
 function ItensMenu({ setIsShowingDrawer, auth }) {
   const { isAuth, setIsAuth } = auth;
+
   const classes = useStyles();
   const history = useHistory();
 
