@@ -7,7 +7,7 @@ import mockService from "../../../utils/__mocks__/serviceMock";
 // Components
 import Perfil from "../index";
 
-const marca = { password: "123456789" };
+const senha = { password: "123456789" };
 
 describe("Marca Cadastro Component Test", () => {
   let senhaValue;
@@ -30,7 +30,7 @@ describe("Marca Cadastro Component Test", () => {
   });
 
   beforeEach(async () => {
-    mockService(marca);
+    mockService(senha);
 
     render(
       <Router history={history}>
@@ -81,5 +81,9 @@ describe("Marca Cadastro Component Test", () => {
     });
 
     fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(history.location.pathname).toBe("/usuarios/edicao");
+    });
   });
 });
