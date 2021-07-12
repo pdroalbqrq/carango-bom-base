@@ -3,6 +3,9 @@ import React from "react";
 // Libs
 import { Route, Switch } from "react-router-dom";
 
+// Components
+import PrivateRoute from "../components/PrivateRoute";
+
 // Pages
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
@@ -18,7 +21,7 @@ import UsuarioRegister from "../pages/Usuario/register";
 
 import Perfil from "../pages/Perfil";
 
-import DashBoard from "../pages/DashBoard";
+import Dashboard from "../pages/Dashboard";
 
 function Routes({ setAuth }) {
   return (
@@ -29,18 +32,30 @@ function Routes({ setAuth }) {
       <Route exact path="/cadastro" component={Cadastro} />
       {/* Veículos */}
       <Route exact path="/" component={Veiculo} />
-      <Route exact path="/veiculos/cadastro" component={VeiculoRegister} />
-      <Route exact path="/veiculos/edicao/:id" component={VeiculoRegister} />
+      <PrivateRoute
+        exact
+        path="/veiculos/cadastro"
+        component={VeiculoRegister}
+      />
+      <PrivateRoute
+        exact
+        path="/veiculos/edicao/:id"
+        component={VeiculoRegister}
+      />
       {/* Marcas */}
-      <Route exact path="/marcas" component={Marca} />
-      <Route exact path="/marcas/cadastro" component={MarcaRegister} />
-      <Route exact path="/marcas/edicao/:id" component={MarcaRegister} />
+      <PrivateRoute exact path="/marcas" component={Marca} />
+      <PrivateRoute exact path="/marcas/cadastro" component={MarcaRegister} />
+      <PrivateRoute exact path="/marcas/edicao/:id" component={MarcaRegister} />
       {/* Usuarios */}
-      <Route exact path="/usuarios" component={Usuario} />
-      <Route exact path="/usuarios/cadastro" component={UsuarioRegister} />
-      <Route exact path="/usuarios/edicao" component={Perfil} />
+      <PrivateRoute exact path="/usuarios" component={Usuario} />
+      <PrivateRoute
+        exact
+        path="/usuarios/cadastro"
+        component={UsuarioRegister}
+      />
+      <PrivateRoute exact path="/usuarios/edicao" component={Perfil} />
       {/* DashBoard */}
-      <Route exact path="/dashboard" component={DashBoard} />
+      <PrivateRoute exact path="/dashboard" component={Dashboard} />
     </Switch>
   );
 }
