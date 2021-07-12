@@ -44,7 +44,7 @@ describe("ItensMenu Component Test", () => {
     expect(btnUsuarios).toBeInTheDocument();
     expect(btnDashboard).toBeInTheDocument();
     expect(btnSair).toBeInTheDocument();
-    expect(menuButtons).toHaveLength(5);
+    expect(menuButtons).toHaveLength(6);
   });
 
   test("deve ir para página de url '/login' quando clicar na opção do menu: 'Entrar'", () => {

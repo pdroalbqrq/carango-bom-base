@@ -1,5 +1,5 @@
 import baseUrl from "../config/environment";
-import { header, handleResponse } from "../utils/http-handlers";
+import { header } from "../utils/http-handlers";
 const MarcaService = {
   cadastrar(marca) {
     return fetch(`${baseUrl}/marcas`, {
@@ -26,7 +26,7 @@ const MarcaService = {
   listar() {
     return fetch(`${baseUrl}/marcas`, {
       headers: header(),
-    }).then((r) => handleResponse(r));
+    }).then((r) => r.json());
   },
 
   excluir(marca) {
