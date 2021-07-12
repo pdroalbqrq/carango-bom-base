@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 
+// Libs
+import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 import { useHistory } from "react-router";
 
+// Context
+import { useContextProvider } from "../../context";
+
+// Hooks
 import useErros from "../../hooks/useErros";
 
+// Services
 import UsuarioService from "../../services/UsuarioService";
 
 function Cadastro() {
+  const { setLoading } = useContextProvider();
+
   const [usuarioForm, setUsuarioForm] = useState({
     username: "",
     senha: "",
@@ -30,7 +38,7 @@ function Cadastro() {
     formatValid("obrigatorio", ["Usuário"]),
   ];
   const validacoesSenha = [
-    formatValid("tamanhoMinimo", ["Senha", 7]),
+    formatValid("tamanhoMinimo", ["Senha", 8]),
     formatValid("tamanhoMaximo", ["Senha", 50]),
     formatValid("obrigatorio", ["Senha"]),
   ];
@@ -41,12 +49,17 @@ function Cadastro() {
       onSubmit={(event) => {
         event.preventDefault();
         if (usuarioForm.formValid) {
+          setLoading(true);
           UsuarioService.cadastrar({
             username: usuarioForm.username,
             password: usuarioForm.senha,
-          }).then((res) => {
-            history.push("/login");
-          });
+          })
+            .then((res) => {
+              history.push("/login");
+            })
+            .finally(() => {
+              setLoading(false);
+            });
         }
       }}
     >

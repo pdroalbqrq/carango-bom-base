@@ -2,10 +2,10 @@ const validations = {
   tamanhoMinimo: (dado, campo, tamanho) => {
     const errorObject = {
       valido: false,
-      texto: `${campo} deve ter ao menos ${tamanho} letras.`,
+      texto: `${campo} deve ter ao menos ${tamanho} caracteres.`,
     };
 
-    if (dado && dado.length <= tamanho) {
+    if (dado && dado.length < tamanho) {
       return errorObject;
     }
     return { valido: true, texto: "" };
@@ -13,10 +13,10 @@ const validations = {
   tamanhoMaximo: (dado, campo, tamanho) => {
     const errorObject = {
       valido: false,
-      texto: `${campo} deve ter no máximo ${tamanho} letras.`,
+      texto: `${campo} deve ter no máximo ${tamanho} caracteres.`,
     };
 
-    if (dado && dado.length >= tamanho) {
+    if (dado && dado.length > tamanho) {
       return errorObject;
     }
     return { valido: true, texto: "" };

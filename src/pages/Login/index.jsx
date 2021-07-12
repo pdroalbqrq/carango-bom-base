@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 
+// Libs
+import { Button, TextField, Grid, Typography, Link } from "@material-ui/core";
 import { useHistory } from "react-router";
 
+// Context
+import { useContextProvider } from "../../context";
+
+// Hooks
 import useErros from "../../hooks/useErros";
 
+// Services
 import UsuarioService from "../../services/UsuarioService";
 
 function Login({ setAuth, openPopup }) {
+  const { setLoading } = useContextProvider();
+
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -27,7 +35,7 @@ function Login({ setAuth, openPopup }) {
     formatValid("obrigatorio", ["Usuário"]),
   ];
   const validacoesSenha = [
-    formatValid("tamanhoMinimo", ["Senha", 7]),
+    formatValid("tamanhoMinimo", ["Senha", 8]),
     formatValid("tamanhoMaximo", ["Senha", 50]),
     formatValid("obrigatorio", ["Senha"]),
   ];
@@ -37,11 +45,16 @@ function Login({ setAuth, openPopup }) {
       onSubmit={(event) => {
         event.preventDefault();
         if (loginForm.formValid) {
-          UsuarioService.autenticar(formValue()).then((res) => {
-            setAuth(true);
-            localStorage.setItem("usuario", loginForm.username);
-            history.push("/");
-          });
+          setLoading(true);
+          UsuarioService.autenticar(formValue())
+            .then((res) => {
+              setAuth(true);
+              localStorage.setItem("usuario", loginForm.username);
+              history.push("/");
+            })
+            .finally(() => {
+              setLoading(false);
+            });
         }
       }}
     >

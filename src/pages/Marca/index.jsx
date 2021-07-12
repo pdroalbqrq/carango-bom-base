@@ -5,6 +5,9 @@ import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import { useHistory } from "react-router";
 
+// Context
+import { useContextProvider } from "../../context";
+
 // Service
 import MarcaService from "../../services/MarcaService";
 
@@ -14,6 +17,7 @@ import { useStyles } from "./styles";
 const colunas = [{ field: "nome", headerName: "Marca", flex: 1 }];
 
 function Marca() {
+  const { setLoading } = useContextProvider();
   const [marcas, setMarcas] = useState([]);
   const [marcaSelecionada, setMarcaSelecionada] = useState();
   const classes = useStyles();
@@ -24,16 +28,22 @@ function Marca() {
   }
 
   function excluir() {
-    MarcaService.excluir(marcaSelecionada).then(() => {
-      setMarcaSelecionada(null);
-      carregarMarcas();
-    });
+    setLoading(true);
+    MarcaService.excluir(marcaSelecionada)
+      .then(() => {
+        setMarcaSelecionada(null);
+        carregarMarcas();
+      })
+      .finally(() => setLoading(false));
   }
 
   useEffect(() => carregarMarcas(), []);
 
   function carregarMarcas() {
-    return MarcaService.listar().then(setMarcas);
+    setLoading(true);
+    return MarcaService.listar()
+      .then(setMarcas)
+      .finally(() => setLoading(false));
   }
 
   return (

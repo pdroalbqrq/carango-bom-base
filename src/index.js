@@ -7,6 +7,9 @@ import reportWebVitals from "./reportWebVitals";
 // Libs
 import { BrowserRouter as Router } from "react-router-dom";
 
+// Context
+import { ContextProvider } from "./context";
+
 // App
 import App from "./App";
 
@@ -15,9 +18,11 @@ import "fontsource-roboto";
 import "./index.css";
 
 ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+  <ContextProvider>
+    <Router>
+      <App />
+    </Router>
+  </ContextProvider>,
   document.getElementById("root")
 );
 

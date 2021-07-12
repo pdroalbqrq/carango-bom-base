@@ -1,22 +1,33 @@
 // Libs
 import { Container, Divider, Grid, Paper, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+
+// Context
+import { useContextProvider } from "../../context";
+
 // Style
 import { useStyles } from "./styles";
+
 // Service
 import VeiculoService from "../../services/VeiculoService";
 
 function DashBoard() {
   const [dashboard, setDashboard] = useState([]);
   const classes = useStyles();
+  const { setLoading } = useContextProvider();
 
   useEffect(() => {
     let isSubscribed = true;
-    VeiculoService.dashboard().then((res) => {
-      if (isSubscribed) {
-        setDashboard(res);
-      }
-    });
+    setLoading(true);
+    VeiculoService.dashboard()
+      .then((res) => {
+        if (isSubscribed) {
+          setDashboard(res);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     return () => (isSubscribed = false);
   }, []);
 

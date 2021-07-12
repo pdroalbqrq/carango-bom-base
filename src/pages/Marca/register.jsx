@@ -7,6 +7,9 @@ import { useHistory, useParams } from "react-router";
 // Hooks
 import useErros from "../../hooks/useErros";
 
+// Context
+import { useContextProvider } from "../../context";
+
 // Service
 import MarcaService from "../../services/MarcaService";
 
@@ -14,6 +17,7 @@ import MarcaService from "../../services/MarcaService";
 import { useStyles } from "./styles";
 
 function MarcaRegister() {
+  const { setLoading } = useContextProvider();
   const [marca, setMarca] = useState({
     nome: "",
     formErrors: {
@@ -39,11 +43,14 @@ function MarcaRegister() {
   useEffect(() => {
     if (id) {
       let isSubscribed = true;
-      MarcaService.consultar(id).then((m) => {
-        if (isSubscribed) {
-          setMarca({ ...marca, nome: m.nome });
-        }
-      });
+      setLoading(true);
+      MarcaService.consultar(id)
+        .then((m) => {
+          if (isSubscribed) {
+            setMarca({ ...marca, nome: m.nome });
+          }
+        })
+        .finally(() => setLoading(false));
 
       return () => (isSubscribed = false);
     }
@@ -54,15 +61,20 @@ function MarcaRegister() {
       onSubmit={(event) => {
         event.preventDefault();
         if (marca.formValid) {
+          setLoading(true);
           if (id) {
-            MarcaService.alterar({ id, ...formValue() }).then((res) => {
-              cancelar();
-            });
+            MarcaService.alterar({ id, ...formValue() })
+              .then((res) => {
+                cancelar();
+              })
+              .finally(() => setLoading(false));
           } else {
-            MarcaService.cadastrar(formValue()).then((res) => {
-              setMarca({ ...marca, marca: "" });
-              cancelar();
-            });
+            MarcaService.cadastrar(formValue())
+              .then((res) => {
+                setMarca({ ...marca, marca: "" });
+                cancelar();
+              })
+              .finally(() => setLoading(false));
           }
         }
       }}
