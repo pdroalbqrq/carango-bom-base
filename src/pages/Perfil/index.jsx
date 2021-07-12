@@ -24,7 +24,7 @@ function Perfil() {
 
   const validacoesSenha = [
     formatValid("tamanhoMinimo", ["Senha", 7]),
-    formatValid("tamanhoMaximo", ["Senha", 50]),
+    formatValid("tamanhoMaximo", ["Senha", 25]),
     formatValid("obrigatorio", ["Senha"]),
   ];
 
