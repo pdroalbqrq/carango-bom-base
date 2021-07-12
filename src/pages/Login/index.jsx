@@ -37,11 +37,15 @@ function Login({ setAuth, openPopup }) {
       onSubmit={(event) => {
         event.preventDefault();
         if (loginForm.formValid) {
-          UsuarioService.autenticar(formValue()).then((res) => {
-            setAuth(true);
-            localStorage.setItem("usuario", loginForm.username);
-            history.push("/");
-          });
+          UsuarioService.autenticar(formValue())
+            .then((res) => {
+              setAuth(true);
+              localStorage.setItem("usuario", loginForm.username);
+              history.push("/");
+            })
+            .catch((e) => {
+              console.log("erro", e);
+            });
         }
       }}
     >

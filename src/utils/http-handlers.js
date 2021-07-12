@@ -8,13 +8,4 @@ const header = (hasBody = false) => {
   return headerOptions;
 };
 
-const handleResponse = (response, hasBody = true) => {
-  if (response.status === 403) {
-    localStorage.removeItem("jwt");
-    throw new Error("Não autorizado");
-  }
-
-  return hasBody ? response.json() : response;
-};
-
-export { header, handleResponse };
+export { header };

@@ -1,5 +1,5 @@
 import baseUrl from "../config/environment";
-import { header, handleResponse } from "../utils/http-handlers";
+import { header } from "../utils/http-handlers";
 
 const VeiculoService = {
   cadastrar(veiculo) {
@@ -7,7 +7,7 @@ const VeiculoService = {
       method: "POST",
       body: JSON.stringify(veiculo),
       headers: header(),
-    }).then((r) => handleResponse(r));
+    }).then((r) => r.json());
   },
 
   alterar(veiculo) {
@@ -28,14 +28,14 @@ const VeiculoService = {
   dashboard() {
     return fetch(`${baseUrl}/veiculos/dashboard`, {
       headers: header(true),
-    }).then((r) => handleResponse(r));
+    }).then((r) => r.json());
   },
 
   excluir(veiculo) {
     return fetch(`${baseUrl}/veiculos/` + veiculo.id, {
       method: "DELETE",
       headers: header(true),
-    }).then((r) => handleResponse(r, false));
+    }).then((r) => r);
   },
 };
 

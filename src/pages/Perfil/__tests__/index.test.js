@@ -79,8 +79,7 @@ describe("Marca Cadastro Component Test", () => {
     await waitFor(() => {
       fireEvent.change(senhaInput, { target: { value: senhaValue } });
     });
-    fireEvent.click(submitButton);
 
-    await waitFor(() => expect(console.log(senhaInput.value)));
+    fireEvent.click(submitButton);
   });
 });
