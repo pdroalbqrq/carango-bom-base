@@ -23,7 +23,12 @@ import MarcaService from "../../services/MarcaService";
 // Style
 import { useStyles } from "./styles";
 
+// Context
+import { useContextProvider } from "../../context";
+
 function VeiculoRegister() {
+  const { setLoading } = useContextProvider();
+
   const [veiculo, setVeiculo] = useState({
     marcaId: "",
     modelo: "",
@@ -62,11 +67,16 @@ function VeiculoRegister() {
 
   useEffect(() => {
     let isSubscribed = true;
-    MarcaService.listar().then((res) => {
-      if (isSubscribed) {
-        setMarcas(res);
-      }
-    });
+    setLoading(true);
+    MarcaService.listar()
+      .then((res) => {
+        if (isSubscribed) {
+          setMarcas(res);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
     return () => (isSubscribed = false);
   }, []);
@@ -85,17 +95,22 @@ function VeiculoRegister() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        setLoading(true);
         if (veiculo.formValid) {
-          VeiculoService.cadastrar(formValue()).then((res) => {
-            setVeiculo({
-              ...veiculo,
-              marcaId: "",
-              modelo: "",
-              ano: "",
-              valor: "",
+          VeiculoService.cadastrar(formValue())
+            .then((res) => {
+              setVeiculo({
+                ...veiculo,
+                marcaId: "",
+                modelo: "",
+                ano: "",
+                valor: "",
+              });
+              history.goBack();
+            })
+            .finally(() => {
+              setLoading(false);
             });
-            history.goBack();
-          });
         }
       }}
     >

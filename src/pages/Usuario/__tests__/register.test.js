@@ -6,6 +6,9 @@ import { Router, Route } from "react-router-dom";
 // Components
 import Cadastro from "../register";
 
+// Context
+import { ContextProvider } from "../../../context";
+
 // Mock
 import mockService from "../../../utils/__mocks__/serviceMock";
 
@@ -48,9 +51,11 @@ describe("Login Component Test", () => {
     mockService(data);
 
     render(
-      <Router history={history}>
-        <Route exact path="/usuario/cadastro" component={Cadastro} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/usuario/cadastro" component={Cadastro} />
+        </Router>
+      </ContextProvider>
     );
 
     submitButton = await screen.findByTestId("submit-btn");
@@ -70,7 +75,7 @@ describe("Login Component Test", () => {
   });
 
   test("formulario inválido com erro de tamanho minimo", async () => {
-    nameValue = genValues(3);
+    nameValue = genValues(2);
 
     await waitFor(() => {
       fireEvent.change(nameInput, { target: { value: nameValue } });

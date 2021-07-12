@@ -3,30 +3,47 @@ import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+
 // Service
 import UsuarioService from "../../services/UsuarioService";
+
+// Context
+import { useContextProvider } from "../../context";
+
 // Style
 import { useStyles } from "./styles";
 
 const colunas = [{ field: "username", headerName: "Nome", flex: 1 }];
 
 function Usuario() {
+  const { setLoading } = useContextProvider();
+
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioSelecionado, setUsuarioSelecionado] = useState();
   const classes = useStyles();
   const history = useHistory();
 
   function excluir() {
-    UsuarioService.excluir(usuarioSelecionado).then(() => {
-      setUsuarioSelecionado(null);
-      carregarUsuarios();
-    });
+    setLoading(true);
+    UsuarioService.excluir(usuarioSelecionado)
+      .then(() => {
+        setUsuarioSelecionado(null);
+        carregarUsuarios();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => carregarUsuarios(), []);
 
   function carregarUsuarios() {
-    UsuarioService.listar().then(setUsuarios);
+    setLoading(true);
+    UsuarioService.listar()
+      .then(setUsuarios)
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (

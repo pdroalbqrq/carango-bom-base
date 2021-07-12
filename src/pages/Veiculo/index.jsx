@@ -11,6 +11,9 @@ import VeiculoService from "../../services/VeiculoService";
 // Style
 import { useStyles } from "./styles";
 
+// Context
+import { useContextProvider } from "../../context";
+
 const colunas = [
   {
     field: "marca",
@@ -24,30 +27,34 @@ const colunas = [
 ];
 
 function Veiculo() {
+  const { setLoading } = useContextProvider();
+
   const [veiculos, setVeiculos] = useState([]);
   const [veiculoSelecionado, setVeiculoSelecionado] = useState();
   const classes = useStyles();
   const history = useHistory();
 
-  function handleError() {
-    setVeiculos([]);
-    history.push("/");
-    window.location.reload();
-  }
-
   function excluir() {
+    setLoading(true);
     VeiculoService.excluir(veiculoSelecionado)
       .then(() => {
         setVeiculoSelecionado(null);
         carregarVeiculos();
       })
-      .catch(() => handleError());
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => carregarVeiculos(), []);
 
   function carregarVeiculos() {
-    VeiculoService.listar().then((dados) => setVeiculos(dados));
+    setLoading(true);
+    VeiculoService.listar()
+      .then((dados) => setVeiculos(dados))
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (

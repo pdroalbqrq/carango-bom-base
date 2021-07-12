@@ -13,8 +13,8 @@ import useErros from "../../hooks/useErros";
 // Services
 import UsuarioService from "../../services/UsuarioService";
 
-function Login({ setAuth, openPopup }) {
-  const { setLoading } = useContextProvider();
+function Login() {
+  const { setLoading, setIsAuth } = useContextProvider();
 
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -48,7 +48,7 @@ function Login({ setAuth, openPopup }) {
           setLoading(true);
           UsuarioService.autenticar(formValue())
             .then((res) => {
-              setAuth(true);
+              setIsAuth(true);
               localStorage.setItem("usuario", loginForm.username);
               history.push("/");
             })

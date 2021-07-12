@@ -6,6 +6,9 @@ import { Router, Route } from "react-router-dom";
 // Components
 import Cadastro from "../index";
 
+// Context
+import { ContextProvider } from "../../../context";
+
 // Mock
 import mockService from "../../../utils/__mocks__/serviceMock";
 
@@ -46,9 +49,11 @@ describe("Cadastro Component Test", () => {
   beforeEach(() => {
     mockService({ response: "ok" });
     render(
-      <Router history={history}>
-        <Route exact path="/cadastro" component={Cadastro} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/cadastro" component={Cadastro} />
+        </Router>
+      </ContextProvider>
     );
 
     submitButton = screen.getByTestId("submit-btn");

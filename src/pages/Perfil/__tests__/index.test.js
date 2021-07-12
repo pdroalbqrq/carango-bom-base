@@ -2,8 +2,13 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Route, Router } from "react-router-dom";
+
 // Mock
 import mockService from "../../../utils/__mocks__/serviceMock";
+
+// Context
+import { ContextProvider } from "../../../context";
+
 // Components
 import Perfil from "../index";
 
@@ -33,9 +38,11 @@ describe("Marca Cadastro Component Test", () => {
     mockService(senha);
 
     render(
-      <Router history={history}>
-        <Route exact path="/usuarios/edicao" component={Perfil} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/usuarios/edicao" component={Perfil} />
+        </Router>
+      </ContextProvider>
     );
 
     submitButton = await screen.findByTestId("submit-btn");

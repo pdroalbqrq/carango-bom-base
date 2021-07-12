@@ -2,8 +2,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Route, Router } from "react-router-dom";
+
 // Mock
 import mockService from "../../../utils/__mocks__/serviceMock";
+
+// Context
+import { ContextProvider } from "../../../context";
+
 // Components
 import Marca from "../index";
 
@@ -29,9 +34,11 @@ describe("Marca Cadastro Component Test", () => {
     mockService(marca);
 
     render(
-      <Router history={history}>
-        <Route exact path="/marcas" component={Marca} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/marcas" component={Marca} />
+        </Router>
+      </ContextProvider>
     );
 
     insertButton = await screen.findByTestId("insert-btn");

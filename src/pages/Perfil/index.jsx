@@ -2,14 +2,22 @@
 import { Button, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { useEffect } from "react";
+
 // Hooks
 import useErros from "../../hooks/useErros";
+
+// Context
+import { useContextProvider } from "../../context";
+
 // Service
 import UsuarioService from "../../services/UsuarioService";
+
 // Style
 import { useStyles } from "./styles";
 
 function Perfil() {
+  const { setLoading } = useContextProvider();
+
   const [usuario, setUsuario] = useState({
     password: "",
     username: "",
@@ -38,10 +46,15 @@ function Perfil() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        setLoading(true);
         if (usuario.formValid) {
-          UsuarioService.alterar(formValue()).then(() => {
-            setUsuario({ ...usuario, password: "" });
-          });
+          UsuarioService.alterar(formValue())
+            .then(() => {
+              setUsuario({ ...usuario, password: "" });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
         }
       }}
     >

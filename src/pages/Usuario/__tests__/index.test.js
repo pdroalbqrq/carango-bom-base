@@ -1,10 +1,14 @@
 // Lib
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { act } from "react-dom/test-utils";
 import { Route, Router } from "react-router-dom";
+
 // Mock
 import mockService from "../../../utils/__mocks__/serviceMock";
+
+// Context
+import { ContextProvider } from "../../../context";
+
 // Components
 import Usuario from "../index";
 
@@ -27,9 +31,11 @@ describe("Usuario Listagem Component Test", () => {
     mockService(usuarios);
 
     render(
-      <Router history={history}>
-        <Route exact path="/usuarios" component={Usuario} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/usuarios" component={Usuario} />
+        </Router>
+      </ContextProvider>
     );
 
     insertButton = await screen.findByTestId("insert-btn");

@@ -6,6 +6,9 @@ import { Router, Route } from "react-router-dom";
 // Components
 import Veiculo from "../register";
 
+// Context
+import { ContextProvider } from "../../../context";
+
 // Mock
 import mockService from "../../../utils/__mocks__/ServiceMock";
 
@@ -50,9 +53,11 @@ describe("Veiculo Cadastro Component Test", () => {
     mockService(veiculo);
 
     render(
-      <Router history={history}>
-        <Route exact path="/veiculos/cadastro" component={Veiculo} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/veiculos/cadastro" component={Veiculo} />
+        </Router>
+      </ContextProvider>
     );
 
     cancelButton = await screen.findByTestId("cancel-btn");

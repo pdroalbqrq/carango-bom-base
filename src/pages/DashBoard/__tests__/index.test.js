@@ -3,6 +3,9 @@ import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router, Route } from "react-router-dom";
 
+// Context
+import { ContextProvider } from "../../../context";
+
 // Mock
 import mockService from "../../../utils/__mocks__/serviceMock";
 
@@ -35,10 +38,12 @@ describe("Dashboard Component Test", () => {
     history = createMemoryHistory();
 
     render(
-      <Router history={history}>
-        <Route exact path="/" component={InitialRoute} />
-        <Route exact path="/dashboard" component={Dashboard} />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route exact path="/" component={InitialRoute} />
+          <Route exact path="/dashboard" component={Dashboard} />
+        </Router>
+      </ContextProvider>
     );
     history.push("/dashboard");
   });
@@ -47,8 +52,8 @@ describe("Dashboard Component Test", () => {
     expect(history.location.pathname).toBe("/dashboard");
   });
 
-  test("O componente renderizado deve corresponder a rota atual", () => {
-    const dashboardGrid = screen.getByTestId("dashboard-grid");
+  test("O componente renderizado deve corresponder a rota atual", async () => {
+    const dashboardGrid = await screen.findByTestId("dashboard-grid");
     expect(dashboardGrid).toBeInTheDocument();
   });
 

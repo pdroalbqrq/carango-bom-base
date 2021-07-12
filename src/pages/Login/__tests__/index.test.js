@@ -3,6 +3,9 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router, Route } from "react-router-dom";
 
+// Context
+import { ContextProvider } from "../../../context";
+
 // Components
 import Login from "../index";
 
@@ -34,13 +37,15 @@ describe("Login Component Test", () => {
   beforeEach(() => {
     mockService({ type: "Bearer", token: "ehjyaodiJSIDjasd" });
     render(
-      <Router history={history}>
-        <Route
-          exact
-          path="/login"
-          render={() => <Login setAuth={(auth) => auth} />}
-        />
-      </Router>
+      <ContextProvider>
+        <Router history={history}>
+          <Route
+            exact
+            path="/login"
+            render={() => <Login setAuth={(auth) => auth} />}
+          />
+        </Router>
+      </ContextProvider>
     );
 
     submitButton = screen.getByTestId("submit-btn");

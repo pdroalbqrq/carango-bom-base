@@ -7,6 +7,9 @@ import { act } from "react-dom/test-utils";
 // Components
 import Veiculo from "../index";
 
+// Context
+import { ContextProvider } from "../../../context";
+
 // Mock
 import mockService from "../../../utils/__mocks__/ServiceMock";
 
@@ -39,9 +42,11 @@ describe("Veiculo Listagem Component Test", () => {
     await act(
       async () =>
         await render(
-          <Router history={history}>
-            <Route exact path="/" component={Veiculo} />
-          </Router>
+          <ContextProvider>
+            <Router history={history}>
+              <Route exact path="/" component={Veiculo} />
+            </Router>
+          </ContextProvider>
         )
     );
 

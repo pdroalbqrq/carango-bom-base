@@ -7,6 +7,9 @@ import { useHistory, useParams } from "react-router";
 // Hooks
 import useErros from "../../hooks/useErros";
 
+// Context
+import { useContextProvider } from "../../context";
+
 // Service
 import UsuarioService from "../../services/UsuarioService";
 
@@ -14,6 +17,8 @@ import UsuarioService from "../../services/UsuarioService";
 import { useStyles } from "./styles";
 
 function UsuarioRegister() {
+  const { setLoading } = useContextProvider();
+
   const [usuario, setUsuario] = useState({
     nome: "",
     formErrors: {
@@ -42,17 +47,22 @@ function UsuarioRegister() {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        setLoading(true);
         const { nome } = usuario;
         if (usuario.formValid) {
           UsuarioService.cadastrar({
             nome,
-          }).then((res) => {
-            setUsuario({
-              ...usuario,
-              nome: "",
+          })
+            .then((res) => {
+              setUsuario({
+                ...usuario,
+                nome: "",
+              });
+              confirm();
+            })
+            .finally(() => {
+              setLoading(false);
             });
-            confirm();
-          });
         }
       }}
     >

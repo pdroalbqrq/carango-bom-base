@@ -1,12 +1,19 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const GeneralContext = createContext();
 
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("jwt")) {
+      setIsAuth(true);
+    }
+  }, []);
 
   return (
-    <GeneralContext.Provider value={{ loading, setLoading }}>
+    <GeneralContext.Provider value={{ loading, setLoading, isAuth, setIsAuth }}>
       {children}
     </GeneralContext.Provider>
   );

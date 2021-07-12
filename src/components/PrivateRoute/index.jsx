@@ -6,7 +6,6 @@ import { Route, Redirect } from "react-router-dom";
 function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route
-      data-testid="privateRoute-component"
       {...rest}
       render={(props) =>
         localStorage.getItem("jwt") ? (
